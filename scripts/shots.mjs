@@ -91,5 +91,6 @@ try {
 } finally {
   await browser.close();
   server.kill();
+  spawnSync('npx', ['astro', 'preview', 'stop'], { stdio: 'ignore' });
 }
 if (!existsSync(OUT)) process.exit(1);

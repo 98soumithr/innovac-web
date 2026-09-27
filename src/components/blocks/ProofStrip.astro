@@ -1,4 +1,6 @@
 ---
+import { isTodo } from '../../data/site';
+
 // Four stats on carbon-2. A stat with no value isn't rendered; with none, the strip isn't either.
 export interface Stat {
   value: string | null;
@@ -26,10 +28,14 @@ const lgCols = ['', 'lg:grid-cols-1', 'lg:grid-cols-2', 'lg:grid-cols-3', 'lg:gr
             ]}
           >
             <dt class="font-mono text-[11px] tracking-[0.12em] text-muted-on-dark uppercase lg:text-[12px]">{s.label}</dt>
-            <dd class="font-display text-stat font-semibold break-words text-text-on-dark">
-              {s.value}
-              {s.unit && <span class="text-[0.5em] text-ice"> {s.unit}</span>}
-            </dd>
+            {isTodo(s.value) ? (
+              <dd class="flex min-h-[1em] items-end font-mono text-[13px] text-ice lg:min-h-[52px]">{s.value}</dd>
+            ) : (
+              <dd class="font-display text-stat font-semibold break-words text-text-on-dark">
+                {s.value}
+                {s.unit && <span class="text-[0.5em] text-ice"> {s.unit}</span>}
+              </dd>
+            )}
           </div>
         ))}
       </dl>

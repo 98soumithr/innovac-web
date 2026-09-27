@@ -5,7 +5,6 @@ Supply these (see docs/content-checklist.md), then fill them in `src/data/site.t
 
 ## Empty fields in `src/data/site.ts`
 
-- `legalName`
 - `phone`
 - `phoneE164`
 - `whatsappE164`
@@ -29,3 +28,13 @@ Supply these (see docs/content-checklist.md), then fill them in `src/data/site.t
 
 ## Placeholders in templates and content
 
+- capacity — src/pages/index.astro:50
+- GSTIN — src/components/blocks/ContactPanel.astro:24, src/components/layout/SiteFooter.astro:7
+- ISO certificate, only if held — src/pages/index.astro:26
+- one public phone number — src/components/blocks/ContactPanel.astro:19
+- plant address — src/components/blocks/ContactPanel.astro:23
+- plants supplied — src/pages/index.astro:54
+- quality checks you actually run (site.ts → qualityChecks) — src/components/blocks/QualityChecks.astro:10
+- quote reply time — src/pages/index.astro:25
+- RFQ form sending is wired in Phase 6 (Web3Forms) — src/components/forms/RfqForm.astro:22
+- sales email on the domain — src/components/blocks/ContactPanel.astro:22

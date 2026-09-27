@@ -93,6 +93,11 @@ export function todo(what: string): string | null {
   return SHOW_TODOS ? `[[TODO: ${what}]]` : null;
 }
 
+/** True for a `[[TODO: …]]` placeholder string, so components can set it small instead of at display size. */
+export function isTodo(value: unknown): boolean {
+  return typeof value === 'string' && value.startsWith('[[TODO');
+}
+
 /** The value if known, otherwise a TODO placeholder (or `null` in the launch build). */
 export function fact<T>(value: T | null | undefined, what: string): T | string | null {
   return value ?? todo(what);

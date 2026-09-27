@@ -10,9 +10,9 @@ const pathname = Astro.url.pathname;
 const wa = whatsappHref();
 ---
 <header class="on-dark sticky top-0 z-40 border-b border-line-dark bg-carbon">
-  <div class="container-site flex h-16 items-center justify-between xl:h-21">
-    <a href={url('/')} class="flex min-h-11 items-center" aria-label="Innovac Ceramic — home">
-      <Wordmark />
+  <div class="container-site flex h-[63px] items-center justify-between xl:h-[83px]">
+    <a href={url('/')} class="flex min-h-11 items-center">
+      <Wordmark /><span class="sr-only">, home</span>
     </a>
 
     <nav aria-label="Main" class="hidden items-center gap-9 xl:flex">

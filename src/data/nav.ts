@@ -29,7 +29,7 @@ export const footerNav: { title: string; links: NavLink[] }[] = [
     links: [
       { label: 'Plant & Quality', href: '/plant-and-quality/' },
       { label: 'Industries', href: '/industries/' },
-      { label: 'About', href: '/about/' },
+      { label: 'Downloads', href: '/downloads/' },
       { label: 'Contact', href: '/contact/' },
     ],
   },

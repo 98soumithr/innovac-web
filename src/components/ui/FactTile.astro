@@ -1,4 +1,6 @@
 ---
+import { isTodo } from '../../data/site';
+
 interface Props {
   value: string;
   label: string;
@@ -16,8 +18,9 @@ const { value, label, tone = 'dark', class: className } = Astro.props;
 >
   <span
     class:list={[
-      'font-display text-[26px] leading-tight font-semibold',
-      tone === 'dark' ? 'text-text-on-dark' : 'text-ink',
+      isTodo(value)
+        ? ['font-mono text-[13px] leading-snug', tone === 'dark' ? 'text-ice' : 'text-caption']
+        : ['font-display text-[26px] leading-tight font-semibold', tone === 'dark' ? 'text-text-on-dark' : 'text-ink'],
     ]}
   >{value}</span>
   <span

@@ -1,9 +1,128 @@
 ---
+// Home: section order is fixed (site-plan §3 and docs/reference/homepage-mockup.html).
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/blocks/Hero.astro';
+import ProofStrip from '../components/blocks/ProofStrip.astro';
+import Section from '../components/ui/Section.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
+import ProductFamily from '../components/blocks/ProductFamily.astro';
+import ProductCard from '../components/blocks/ProductCard.astro';
+import CustomCard from '../components/blocks/CustomCard.astro';
+import FeaturePanel from '../components/blocks/FeaturePanel.astro';
+import PhotoFrame from '../components/ui/PhotoFrame.astro';
+import QualityChecks from '../components/blocks/QualityChecks.astro';
+import FactTile from '../components/ui/FactTile.astro';
+import IndustryTile from '../components/blocks/IndustryTile.astro';
+import RfqForm from '../components/forms/RfqForm.astro';
+import ContactPanel from '../components/blocks/ContactPanel.astro';
+import { site, fact, todo } from '../data/site';
+import { families, filtrationFeature, industries } from '../data/home';
+import { url } from '../lib/paths';
+import { whatsappHref } from '../lib/whatsapp';
+
+const [foundry, filtration, insulation] = families;
+
+const quoteReply = fact(site.quoteReplyTime, 'quote reply time');
+const certificate = site.certificates[0]?.name ?? todo('ISO certificate, only if held');
 ---
-<BaseLayout title="Innovac Ceramic">
-  <main class="container-site py-28 on-dark">
-    <p class="font-mono text-eyebrow uppercase text-ice">Manufacturer · Hyderabad, India</p>
-    <h1 class="mt-7 font-display text-display font-bold uppercase text-text-on-dark">Innovac Ceramic</h1>
-  </main>
+<BaseLayout
+  title="Ceramic Fibre & Foundry Consumables Manufacturer | Innovac"
+  description="Ceramic fibre shapes, foundry consumables and hot gas filter candles, made in our Hyderabad plant to standard sizes or your drawing. Request a quote."
+>
+  <!-- 1. Hero -->
+  <Hero
+    eyebrow="Manufacturer · Hyderabad, India"
+    lead="Sampling spoons, tap-out cones, pouring cups, feeder sleeves, crucibles, filter candles and insulation shapes — in standard sizes or built to your specification in our own plant."
+    primary={{ href: url('/request-a-quote/'), label: 'Send your drawing' }}
+    secondary={{ href: url('/products/'), label: 'Browse products' }}
+    whatsapp={whatsappHref()}
+    photoCaption="finished spoons & cones on the plant floor, real, not stock"
+    badge={quoteReply ? { label: 'Quote reply', value: quoteReply } : null}
+  >
+    Ceramic fibre shapes &amp; foundry consumables. <span class="text-flame">Made to your drawing.</span>
+  </Hero>
+
+  <!-- 2. Proof strip -->
+  <ProofStrip
+    stats={[
+      { value: fact(site.foundedYear?.toString(), 'year founded'), label: 'Manufacturing since' },
+      {
+        value: fact(site.capacity?.value, 'capacity'),
+        unit: site.capacity?.unit ?? 'pcs / month',
+        label: 'Production capacity',
+      },
+      { value: fact(site.plantsSupplied, 'plants supplied'), label: 'Foundries & plants supplied' },
+      { value: fact(site.productLines?.toString(), 'product lines'), label: 'Product lines + custom shapes' },
+    ]}
+  />
+
+  <!-- 3. Products -->
+  <Section tone="paper" id="products" aria-labelledby="products-title" innerClass="flex flex-col gap-14">
+    <SectionHeader eyebrow="01 — Products" id="products-title">
+      Three product families
+      <Fragment slot="intro">Every line is available in standard sizes, or made to your drawing, sample or sketch.</Fragment>
+    </SectionHeader>
+
+    <ProductFamily letter={foundry.letter} title={foundry.title} href={url(`/products/${foundry.slug}/`)}>
+      {foundry.products.map((p) => <ProductCard href={url(`/products/${p.slug}/`)} name={p.name} summary={p.summary} />)}
+    </ProductFamily>
+
+    <ProductFamily letter={filtration.letter} title={filtration.title}>
+      {filtration.products.map((p) => <ProductCard href={url(`/products/${p.slug}/`)} name={p.name} summary={p.summary} />)}
+      <FeaturePanel
+        title={filtrationFeature.title}
+        text={filtrationFeature.text}
+        items={filtrationFeature.applications}
+        itemsLabel="Where filter candles are used"
+      />
+    </ProductFamily>
+
+    <ProductFamily letter={insulation.letter} title={insulation.title} href={url(`/products/${insulation.slug}/`)}>
+      {insulation.products.map((p) => <ProductCard href={url(`/products/${p.slug}/`)} name={p.name} summary={p.summary} />)}
+      <CustomCard href={url('/custom-ceramic-fibre-shapes/')} class="col-span-2 md:col-span-1" />
+    </ProductFamily>
+  </Section>
+
+  <!-- 4. Plant & Quality -->
+  <Section tone="carbon" id="plant" aria-labelledby="plant-title" innerClass="grid gap-12 lg:grid-cols-12 lg:gap-x-6">
+    <SectionHeader eyebrow="02 — Plant & Quality" tone="dark" id="plant-title" class="lg:col-span-12">
+      Made and checked <span class="text-flame">in our own plant</span>
+    </SectionHeader>
+    <div class="grid grid-cols-2 gap-3 md:gap-4 lg:col-span-7">
+      <PhotoFrame caption="plant floor, wide" class="col-span-2 h-56 md:h-[340px]" />
+      <PhotoFrame caption="QC bench / measuring" class="h-36 md:h-[220px]" />
+      <PhotoFrame caption="packed goods ready to dispatch" class="h-36 md:h-[220px]" />
+    </div>
+    <div class="flex flex-col gap-8 lg:col-span-5">
+      <p class="text-lead text-body-on-dark">
+        Every product ships from our Hyderabad plant after it has been measured and checked against the approved spec.
+        Test results for your order are available on request.
+      </p>
+      <QualityChecks />
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {certificate && <FactTile value={certificate} label="Certificate" />}
+        <FactTile value="Test report" label="With every order, on request" />
+      </div>
+    </div>
+  </Section>
+
+  <!-- 5. Industries -->
+  <Section tone="paper" id="industries" aria-labelledby="industries-title" innerClass="flex flex-col gap-12">
+    <SectionHeader eyebrow="03 — Industries" id="industries-title">Who we supply</SectionHeader>
+    <div class="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-5">
+      {industries.map((i) => <IndustryTile href={url(`/industries/${i.slug}/`)} title={i.title} products={i.products} />)}
+    </div>
+  </Section>
+
+  <!-- 6. Request a quote -->
+  <Section tone="white" id="rfq" aria-labelledby="rfq-title" innerClass="grid gap-12 lg:grid-cols-12 lg:gap-x-6">
+    <div class="flex flex-col gap-8 lg:col-span-7">
+      <div class="flex flex-col gap-4">
+        <SectionHeader eyebrow="04 — Request a quote" id="rfq-title">Tell us what you need</SectionHeader>
+        <p class="text-[17px] leading-[1.55] text-body">Only name, phone and product are required. Drawings are kept confidential.</p>
+      </div>
+      <RfqForm id="home-rfq" />
+    </div>
+    <ContactPanel class="lg:col-span-4 lg:col-start-9 lg:self-start" />
+  </Section>
 </BaseLayout>

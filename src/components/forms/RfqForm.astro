@@ -16,7 +16,7 @@ const { variant = 'compact', product, id = 'rfq-form' } = Astro.props;
 const full = variant === 'full';
 const f = (name: string) => `${id}-${name}`;
 
-const label = 'text-[14px] font-semibold text-ink';
+const label = 'text-[14px] leading-[1.2] font-semibold text-ink';
 const field =
   'h-13 w-full rounded-sm border border-field-border bg-white px-3.5 text-[16px] text-ink placeholder:text-caption focus-visible:border-flame';
 const pending = todo('RFQ form sending is wired in Phase 6 (Web3Forms)');
@@ -50,7 +50,7 @@ const pending = todo('RFQ form sending is wired in Phase 6 (Web3Forms)');
   <div class="flex flex-col gap-2">
     <label for={f('phone')} class={label}>Phone <span aria-hidden="true">*</span></label>
     <input id={f('phone')} name="phone" type="tel" required autocomplete="tel" placeholder="+91" class={field} />
-    <label class="flex min-h-11 items-center gap-2 text-[14px] text-body">
+    <label class="flex min-h-11 items-center gap-2 text-[14px] leading-[1.2] text-body lg:min-h-6">
       <input type="checkbox" name="whatsapp_ok" checked class="h-[18px] w-[18px] accent-flame" />
       Reply on WhatsApp is fine
     </label>
@@ -93,7 +93,7 @@ const pending = todo('RFQ form sending is wired in Phase 6 (Web3Forms)');
       name="details"
       rows={full ? 5 : 3}
       placeholder="Metal and pouring temperature, size, delivery location…"
-      class="w-full resize-y rounded-sm border border-field-border bg-white p-3.5 text-[16px] text-ink placeholder:text-caption focus-visible:border-flame"
+      class="w-full resize-y rounded-sm border border-field-border bg-white p-3.5 text-[16px] leading-[1.35] text-ink placeholder:text-caption focus-visible:border-flame"
     ></textarea>
   </div>
   {
