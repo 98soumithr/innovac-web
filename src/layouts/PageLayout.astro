@@ -1,0 +1,28 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs, { type Crumb } from '../components/layout/Breadcrumbs.astro';
+import RfqBand from '../components/blocks/RfqBand.astro';
+
+// Inner pages: breadcrumbs at the top of the (carbon) hero, and the RfqBand at the end.
+interface Props {
+  title: string;
+  description?: string;
+  noindex?: boolean;
+  breadcrumbs?: Crumb[];
+  rfqBand?: boolean;
+  actionBar?: boolean;
+  product?: { slug: string; name: string };
+}
+const { breadcrumbs, rfqBand = true, product, ...base } = Astro.props;
+---
+<BaseLayout {...base} whatsappText={product ? `Hello Innovac, I'd like a quote for ${product.name}.` : undefined}>
+  {
+    breadcrumbs && (
+      <div class="on-dark bg-carbon">
+        <Breadcrumbs items={breadcrumbs} class="container-site pt-6" />
+      </div>
+    )
+  }
+  <slot />
+  {rfqBand && <RfqBand product={product} />}
+</BaseLayout>

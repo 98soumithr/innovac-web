@@ -1,0 +1,27 @@
+---
+import { SHOW_TODOS } from '../../data/site';
+import { BRAND } from '../../lib/brand';
+
+// Basic head tags. Phase 7 adds OG images and JSON-LD (site-plan §4.3–4.4).
+interface Props {
+  title: string;
+  description?: string;
+  noindex?: boolean;
+}
+const { title, description, noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+// The github.io preview must never be indexed.
+const robots = noindex || (SHOW_TODOS && !import.meta.env.DEV) ? 'noindex, nofollow' : undefined;
+---
+<title>{title}</title>
+{description && <meta name="description" content={description} />}
+<link rel="canonical" href={canonical} />
+{robots && <meta name="robots" content={robots} />}
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+{description && <meta property="og:description" content={description} />}
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content="en_IN" />
+<meta property="og:site_name" content="Innovac Ceramic" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="theme-color" content={BRAND.carbon} />

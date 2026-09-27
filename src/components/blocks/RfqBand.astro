@@ -1,0 +1,24 @@
+---
+import Button from '../ui/Button.astro';
+import { url } from '../../lib/paths';
+import { whatsappHref } from '../../lib/whatsapp';
+
+interface Props {
+  product?: { slug: string; name: string };
+}
+const { product } = Astro.props;
+const quoteHref = url(product ? `/request-a-quote/?product=${product.slug}` : '/request-a-quote/');
+const wa = whatsappHref(product ? `Hello Innovac, I'd like a quote for ${product.name}.` : undefined);
+---
+<section class="on-dark border-t border-line-dark bg-carbon py-14 lg:py-20" aria-labelledby="rfq-band-title">
+  <div class="container-site flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+    <div class="flex flex-col gap-3">
+      <h2 id="rfq-band-title" class="font-display text-h2 font-bold text-text-on-dark uppercase">Need a quote?</h2>
+      <p class="max-w-[52ch] text-lead text-body-on-dark">Send a drawing, a sample or your sizes. Standard and custom parts.</p>
+    </div>
+    <div class="flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
+      <Button href={quoteHref} size="lg" trailingIcon="arrow-right">Request a quote</Button>
+      {wa && <Button href={wa} size="lg" variant="outline-dark" icon="whatsapp">WhatsApp us</Button>}
+    </div>
+  </div>
+</section>

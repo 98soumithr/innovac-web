@@ -1,0 +1,49 @@
+---
+import { url } from '../../lib/paths';
+
+export interface Crumb {
+  label: string;
+  href?: string; // path without base; the last crumb has none
+}
+interface Props {
+  items: Crumb[];
+  tone?: 'dark' | 'light';
+  class?: string;
+}
+const { items, tone = 'dark', class: className } = Astro.props;
+const all: Crumb[] = [{ label: 'Home', href: '/' }, ...items];
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: all.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.label,
+    ...(c.href ? { item: new URL(url(c.href), Astro.site).href } : {}),
+  })),
+};
+---
+<nav aria-label="Breadcrumb" class={className}>
+  <ol
+    class:list={[
+      'flex flex-wrap items-center gap-x-2 font-mono text-[12px]',
+      tone === 'dark' ? 'text-muted-on-dark' : 'text-caption',
+    ]}
+  >
+    {
+      all.map((c, i) => (
+        <li class="flex items-center gap-2">
+          {i > 0 && <span aria-hidden="true">/</span>}
+          {c.href && i < all.length - 1 ? (
+            <a href={url(c.href)} class:list={['hover:underline', tone === 'dark' ? 'hover:text-white' : 'hover:text-ink']}>
+              {c.label}
+            </a>
+          ) : (
+            <span aria-current="page">{c.label}</span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

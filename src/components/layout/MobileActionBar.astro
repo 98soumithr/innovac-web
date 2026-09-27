@@ -1,0 +1,19 @@
+---
+import Button from '../ui/Button.astro';
+import { url } from '../../lib/paths';
+import { whatsappHref } from '../../lib/whatsapp';
+
+interface Props {
+  whatsappText?: string;
+}
+const wa = whatsappHref(Astro.props.whatsappText);
+---
+<div
+  class="on-dark fixed inset-x-0 bottom-0 z-30 border-t border-line-dark bg-carbon px-5 py-3 lg:hidden"
+  data-mobile-action-bar
+>
+  <div class:list={['grid gap-3', wa ? 'grid-cols-2' : 'grid-cols-1']}>
+    {wa && <Button href={wa} variant="outline-dark" size="bar" icon="whatsapp" full>WhatsApp</Button>}
+    <Button href={url('/request-a-quote/')} size="bar" full>Request quote</Button>
+  </div>
+</div>

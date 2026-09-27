@@ -1,0 +1,25 @@
+---
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  href: string;
+  class?: string;
+}
+const { href, class: className } = Astro.props;
+---
+<a
+  href={href}
+  class:list={[
+    'flex min-h-56 flex-col justify-between gap-6 rounded-sm bg-flame px-[22px] py-6 text-white transition-colors duration-150 hover:bg-flame-hover',
+    className,
+  ]}
+>
+  <span class="font-mono text-[12px] tracking-[0.16em] uppercase">Custom</span>
+  <span class="flex flex-col gap-2.5">
+    <span class="font-display text-[30px] leading-none font-bold uppercase lg:text-[34px]">Your shape, your drawing</span>
+    <span class="text-[15px] leading-[1.45] text-on-flame-muted">Send a drawing, sample or sketch and we’ll quote it.</span>
+    <span class="inline-flex items-center gap-2 pt-1.5 text-[15px] font-semibold">
+      Send a drawing <Icon name="arrow-right" size={16} stroke={2} />
+    </span>
+  </span>
+</a>

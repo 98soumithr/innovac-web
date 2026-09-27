@@ -1,0 +1,29 @@
+---
+import { site, todo, type QualityCheck } from '../../data/site';
+
+// Mono check list, driven by site.ts → qualityChecks (design-system §4.4).
+interface Props {
+  checks?: QualityCheck[];
+  class?: string;
+}
+const checks = Astro.props.checks ?? site.qualityChecks;
+const placeholder = checks.length === 0 ? todo('quality checks you actually run (site.ts → qualityChecks)') : null;
+---
+{
+  (checks.length > 0 || placeholder) && (
+    <ul class:list={['flex flex-col border-t border-line-dark font-mono text-data', Astro.props.class]}>
+      {checks.map((c) => (
+        <li class="flex items-center justify-between gap-4 border-b border-line-dark py-4">
+          <span class="text-text-on-dark">{c.label}</span>
+          <span class="shrink-0 text-ice"><span aria-hidden="true">✓</span> checked</span>
+        </li>
+      ))}
+      {placeholder && (
+        <li class="flex items-center justify-between gap-4 border-b border-line-dark py-4">
+          <span class="text-text-on-dark">{placeholder}</span>
+          <span class="shrink-0 text-ice"><span aria-hidden="true">✓</span> checked</span>
+        </li>
+      )}
+    </ul>
+  )
+}

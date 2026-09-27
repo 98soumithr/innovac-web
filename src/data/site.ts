@@ -58,7 +58,7 @@ export interface Site {
 
 export const site: Site = {
   brand: 'Innovac Ceramic',
-  legalName: null,
+  legalName: 'Innovac Ceramic Pvt Ltd',
   phone: null,
   phoneE164: null,
   whatsappE164: null,

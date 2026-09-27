@@ -1,0 +1,41 @@
+---
+import Wordmark from './Wordmark.astro';
+import { footerNav } from '../../data/nav';
+import { site, fact } from '../../data/site';
+import { url } from '../../lib/paths';
+
+const gstin = fact(site.gstin, 'GSTIN');
+const cin = site.cin;
+const year = new Date().getFullYear();
+---
+<footer class="on-dark border-t border-line-dark bg-carbon">
+  <div class="container-site flex flex-col gap-12 pt-16 pb-10">
+    <div class="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-12">
+      <div class="col-span-2 flex flex-col gap-3 md:col-span-4">
+        <Wordmark />
+        <p class="text-small text-muted-on-dark">{site.legalName ?? site.brand} · Hyderabad, India</p>
+      </div>
+      {
+        footerNav.map((group, i) => (
+          <div class:list={['flex flex-col gap-2.5 md:col-span-2', i === 0 && 'md:col-start-7']}>
+            <p class="font-mono text-[11px] tracking-[0.14em] text-faint-on-dark uppercase">{group.title}</p>
+            {group.links.map((l) => (
+              <a href={url(l.href)} class="flex min-h-7 items-center text-small text-nav-link hover:text-white">
+                {l.label}
+              </a>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+    <div
+      class="flex flex-col gap-2 border-t border-line-dark pt-6 font-mono text-[12px] text-faint-on-dark md:flex-row md:justify-between"
+    >
+      <span>© {year} {site.legalName ?? site.brand}</span>
+      <span class="flex flex-wrap gap-x-6 gap-y-1">
+        {gstin && <span>GSTIN {gstin}</span>}
+        {cin && <span>CIN {cin}</span>}
+      </span>
+    </div>
+  </div>
+</footer>

@@ -2,26 +2,41 @@
 import '../styles/global.css';
 import condensed700 from '@fontsource/barlow-condensed/files/barlow-condensed-latin-700-normal.woff2?url';
 import barlow400 from '@fontsource/barlow/files/barlow-latin-400-normal.woff2?url';
+import Seo from '../components/layout/Seo.astro';
+import SiteHeader from '../components/layout/SiteHeader.astro';
+import SiteFooter from '../components/layout/SiteFooter.astro';
+import MobileActionBar from '../components/layout/MobileActionBar.astro';
 import { url } from '../lib/paths';
 
 interface Props {
   title: string;
   description?: string;
+  noindex?: boolean;
+  actionBar?: boolean; // the mobile WhatsApp / quote bar (hidden on /request-a-quote/)
+  whatsappText?: string;
 }
-const { title, description } = Astro.props;
+const { title, description, noindex, actionBar = true, whatsappText } = Astro.props;
 ---
 <!doctype html>
 <html lang="en-IN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    {description && <meta name="description" content={description} />}
+    <Seo title={title} description={description} noindex={noindex} />
     <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
     <link rel="preload" href={condensed700} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={barlow400} as="font" type="font/woff2" crossorigin />
   </head>
-  <body>
-    <slot />
+  <body class:list={['flex min-h-screen flex-col', actionBar && 'max-lg:pb-18']}>
+    <a
+      href="#main"
+      class="sr-only z-50 bg-flame px-4 py-3 font-semibold text-white focus:not-sr-only focus:fixed focus:top-2 focus:left-2"
+    >Skip to content</a>
+    <SiteHeader />
+    <main id="main" class="grow">
+      <slot />
+    </main>
+    <SiteFooter />
+    {actionBar && <MobileActionBar whatsappText={whatsappText} />}
   </body>
 </html>

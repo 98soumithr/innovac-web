@@ -1,0 +1,32 @@
+---
+// Decorative hairline scale, 0°–1400°, ticks every 100°, labels every 200°, the last three in flame.
+// A ruler, never a claim: it carries no product temperature (design-system §4.1).
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+const ticks = Array.from({ length: 15 }, (_, i) => i * 100);
+---
+<div
+  aria-hidden="true"
+  class:list={['flex h-[34px] items-end justify-between border-b border-line-dark', className]}
+>
+  {
+    ticks.map((t, i) => {
+      const major = t % 200 === 0;
+      return (
+        <div class:list={['flex flex-col items-center gap-1.5', !major && 'max-md:hidden']}>
+          <span class="font-mono text-[10px] leading-none text-faint-on-dark">{major ? `${t}°` : ''}</span>
+          <span
+            class:list={[
+              'block w-px origin-bottom animate-tick',
+              major ? 'h-3' : 'h-1.5',
+              t >= 1200 ? 'bg-flame' : 'bg-line-dark-strong',
+            ]}
+            style={`animation-delay:${i * 15}ms`}
+          />
+        </div>
+      );
+    })
+  }
+</div>

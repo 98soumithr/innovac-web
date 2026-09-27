@@ -1,0 +1,106 @@
+---
+import Wordmark from './Wordmark.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import { mainNav, quoteLink } from '../../data/nav';
+import { url, isCurrent } from '../../lib/paths';
+import { whatsappHref } from '../../lib/whatsapp';
+
+const pathname = Astro.url.pathname;
+const wa = whatsappHref();
+---
+<header class="on-dark sticky top-0 z-40 border-b border-line-dark bg-carbon">
+  <div class="container-site flex h-16 items-center justify-between xl:h-21">
+    <a href={url('/')} class="flex min-h-11 items-center" aria-label="Innovac Ceramic — home">
+      <Wordmark />
+    </a>
+
+    <nav aria-label="Main" class="hidden items-center gap-9 xl:flex">
+      {
+        mainNav.map((l) => {
+          const href = url(l.href);
+          const current = isCurrent(href, pathname);
+          return (
+            <a
+              href={href}
+              aria-current={current ? 'page' : undefined}
+              class:list={[
+                'text-[16px] font-medium transition-colors duration-150 hover:text-white',
+                current ? 'text-white' : 'text-nav-link',
+              ]}
+            >
+              {l.label}
+            </a>
+          );
+        })
+      }
+      <Button href={url(quoteLink.href)}>{quoteLink.label}</Button>
+    </nav>
+
+    <button
+      type="button"
+      class="-mr-2 inline-flex h-11 w-11 items-center justify-center rounded-full text-white xl:hidden"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      data-menu-toggle
+    >
+      <span class="sr-only" data-menu-label>Open menu</span>
+      <Icon name="menu" size={24} class="menu-open-icon" />
+      <Icon name="close" size={24} class="menu-close-icon hidden" />
+    </button>
+  </div>
+
+  <div
+    id="mobile-menu"
+    hidden
+    class="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto border-t border-line-dark bg-carbon xl:hidden"
+  >
+    <nav aria-label="Main" class="container-site flex flex-col py-6">
+      {
+        mainNav.map((l) => {
+          const href = url(l.href);
+          return (
+            <a
+              href={href}
+              aria-current={isCurrent(href, pathname) ? 'page' : undefined}
+              class="flex min-h-14 items-center justify-between border-b border-line-dark font-display text-[28px] font-semibold tracking-[0.02em] text-text-on-dark uppercase"
+            >
+              {l.label}
+              <Icon name="chevron" class="text-ice" />
+            </a>
+          );
+        })
+      }
+      <div class="mt-8 flex flex-col gap-3">
+        <Button href={url(quoteLink.href)} size="lg" full>{quoteLink.label}</Button>
+        {wa && <Button href={wa} variant="outline-dark" size="lg" icon="whatsapp" full>WhatsApp us</Button>}
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.getElementById('mobile-menu');
+  const label = toggle?.querySelector('[data-menu-label]');
+
+  function setOpen(open: boolean) {
+    if (!toggle || !menu) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    menu.hidden = !open;
+    document.documentElement.classList.toggle('overflow-hidden', open);
+    toggle.querySelector('.menu-open-icon')?.classList.toggle('hidden', open);
+    toggle.querySelector('.menu-close-icon')?.classList.toggle('hidden', !open);
+    if (label) label.textContent = open ? 'Close menu' : 'Open menu';
+    if (open) menu.querySelector<HTMLElement>('a')?.focus();
+  }
+
+  toggle?.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+  window.matchMedia('(min-width: 80rem)').addEventListener('change', (e) => e.matches && setOpen(false));
+</script>

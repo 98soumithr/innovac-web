@@ -1,0 +1,25 @@
+---
+interface Props {
+  columns: string[];
+  rows: string[][];
+  caption?: string;
+}
+const { columns, rows, caption = 'Standard sizes' } = Astro.props;
+---
+<div class="overflow-x-auto" role="region" aria-label={caption} tabindex="0">
+  <table class="w-full min-w-[520px] border-collapse text-left">
+    <caption class="sr-only">{caption}</caption>
+    <thead>
+      <tr class="border-b border-ink">
+        {columns.map((c) => <th scope="col" class="py-3 pr-4 font-mono text-[12px] font-normal tracking-[0.12em] whitespace-nowrap text-caption uppercase">{c}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((r) => (
+        <tr class="border-b border-line-light">
+          {r.map((cell) => <td class="py-3 pr-4 font-mono text-data whitespace-nowrap text-ink tabular-nums">{cell}</td>)}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

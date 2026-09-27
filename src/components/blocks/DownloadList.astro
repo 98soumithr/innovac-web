@@ -1,0 +1,40 @@
+---
+import Icon from '../ui/Icon.astro';
+import { url } from '../../lib/paths';
+
+export interface DownloadItem {
+  title: string;
+  type: 'datasheet' | 'profile' | 'certificate';
+  family?: string;
+  file: string | null; // /downloads/… ; null = "Available on request"
+  sizeKB?: number;
+  revised?: string;
+}
+interface Props {
+  items: DownloadItem[];
+}
+const TYPE_LABEL = { datasheet: 'Datasheet', profile: 'Company profile', certificate: 'Certificate' };
+---
+<ul class="border-t border-line-light">
+  {
+    Astro.props.items.map((d) => (
+      <li class="flex flex-col gap-2 border-b border-line-light py-4 md:flex-row md:items-center md:justify-between md:gap-6" data-family={d.family}>
+        <div class="flex flex-col gap-1">
+          <span class="text-[17px] font-semibold text-ink">{d.title}</span>
+          <span class="font-mono text-[12px] text-caption">
+            {[TYPE_LABEL[d.type], d.file && 'PDF', d.sizeKB && `${d.sizeKB} KB`, d.revised && `Rev. ${d.revised}`].filter(Boolean).join(' · ')}
+          </span>
+        </div>
+        {d.file ? (
+          <a href={url(d.file)} class="inline-flex min-h-11 items-center gap-2 font-semibold text-flame hover:text-flame-hover hover:underline" download data-event="download">
+            <Icon name="download" size={18} /> Download<span class="sr-only"> {d.title}</span>
+          </a>
+        ) : (
+          <a href={url('/request-a-quote/')} class="inline-flex min-h-11 items-center font-semibold text-flame hover:text-flame-hover hover:underline">
+            Available on request
+          </a>
+        )}
+      </li>
+    ))
+  }
+</ul>

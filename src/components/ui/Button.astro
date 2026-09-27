@@ -1,0 +1,74 @@
+---
+import Icon, { type IconName } from './Icon.astro';
+
+type Variant = 'primary' | 'outline-dark' | 'outline-flame' | 'outline-light' | 'text-dark' | 'text-light';
+
+interface Props {
+  variant?: Variant;
+  size?: 'lg' | 'field' | 'bar' | 'md'; // 56 · 52 · 48 · 44 px
+  href?: string;
+  type?: 'button' | 'submit';
+  icon?: IconName; // icon before the label
+  trailingIcon?: IconName; // e.g. arrow-right
+  disabled?: boolean;
+  full?: boolean;
+  class?: string;
+  [key: `data-${string}`]: string | undefined;
+  'aria-label'?: string;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  href,
+  type = 'button',
+  icon,
+  trailingIcon,
+  disabled = false,
+  full = false,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const base =
+  'inline-flex items-center justify-center gap-3 rounded-sm font-semibold whitespace-nowrap transition-colors duration-150 select-none';
+const sizes = {
+  lg: 'h-14 px-7 text-button',
+  field: 'h-13 px-6 text-[16px]',
+  bar: 'h-12 px-4 text-[16px]',
+  md: 'h-11 px-5 text-[16px]',
+};
+const variants: Record<Variant, string> = {
+  primary: 'bg-flame text-white hover:bg-flame-hover active:bg-flame-hover',
+  'outline-dark': 'border border-line-dark-strong text-white hover:border-body-on-dark active:bg-carbon-2',
+  'outline-flame': 'border border-flame text-white hover:bg-flame active:bg-flame-hover',
+  'outline-light': 'border border-field-border text-ink hover:border-ink active:bg-paper',
+  'text-dark': 'px-2 font-medium text-nav-link hover:text-white',
+  'text-light': 'px-2 text-flame hover:text-flame-hover hover:underline',
+};
+const classes = [
+  base,
+  sizes[size],
+  variants[variant],
+  variant.startsWith('text') && (size === 'lg' ? 'text-[16px]' : 'text-[15px]'),
+  full && 'w-full',
+  disabled && 'pointer-events-none opacity-50',
+  className,
+];
+const iconSize = size === 'lg' ? 20 : 18;
+---
+{
+  href ? (
+    <a href={disabled ? undefined : href} class:list={classes} aria-disabled={disabled || undefined} {...rest}>
+      {icon && <Icon name={icon} size={iconSize} />}
+      <slot />
+      {trailingIcon && <Icon name={trailingIcon} size={iconSize - 2} stroke={2} />}
+    </a>
+  ) : (
+    <button type={type} class:list={classes} disabled={disabled} {...rest}>
+      {icon && <Icon name={icon} size={iconSize} />}
+      <slot />
+      {trailingIcon && <Icon name={trailingIcon} size={iconSize - 2} stroke={2} />}
+    </button>
+  )
+}

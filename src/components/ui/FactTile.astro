@@ -1,0 +1,29 @@
+---
+interface Props {
+  value: string;
+  label: string;
+  tone?: 'dark' | 'light';
+  class?: string;
+}
+const { value, label, tone = 'dark', class: className } = Astro.props;
+---
+<div
+  class:list={[
+    'flex flex-col gap-1.5 rounded-sm border p-5',
+    tone === 'dark' ? 'border-line-dark' : 'border-line-light bg-white',
+    className,
+  ]}
+>
+  <span
+    class:list={[
+      'font-display text-[26px] leading-tight font-semibold',
+      tone === 'dark' ? 'text-text-on-dark' : 'text-ink',
+    ]}
+  >{value}</span>
+  <span
+    class:list={[
+      'font-mono text-[11px] tracking-[0.12em] uppercase',
+      tone === 'dark' ? 'text-muted-on-dark' : 'text-caption',
+    ]}
+  >{label}</span>
+</div>

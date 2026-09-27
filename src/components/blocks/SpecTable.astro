@@ -1,0 +1,39 @@
+---
+export interface SpecRow {
+  property: string;
+  value: string | null;
+  method?: string;
+}
+interface Props {
+  rows: SpecRow[];
+  caption?: string;
+}
+const rows = Astro.props.rows.filter((r) => r.value);
+const methods = [...new Set(rows.map((r) => r.method).filter(Boolean))];
+---
+{
+  rows.length > 0 && (
+    <div class="flex flex-col gap-3">
+      <table class="w-full border-collapse text-left">
+        <caption class="sr-only">{Astro.props.caption ?? 'Typical values'}</caption>
+        <thead>
+          <tr class="border-b border-ink">
+            <th scope="col" class="py-3 pr-4 font-mono text-[12px] font-normal tracking-[0.12em] text-caption uppercase">Property</th>
+            <th scope="col" class="py-3 font-mono text-[12px] font-normal tracking-[0.12em] text-caption uppercase">Typical values</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr class="border-b border-line-light">
+              <th scope="row" class="py-3.5 pr-4 text-[15px] font-medium text-ink">{r.property}</th>
+              <td class="py-3.5 font-mono text-data text-ink tabular-nums">{r.value}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="font-mono text-[12px] text-caption">
+        Typical values, not guaranteed minimums.{methods.length > 0 && ` Test method: ${methods.join(', ')}.`}
+      </p>
+    </div>
+  )
+}

@@ -14,7 +14,8 @@ const BANNED = [
   [/\b(suction|dewater(ing|ed)?|felting)\b/i, 'forming process'],
   // Superlatives and filler (design-system §8).
   [/\bworld[\s-]class\b/i, 'superlative ("world-class")'],
-  [/\bleading\b/i, 'superlative ("leading")'],
+  // `leading-*` is a Tailwind class (line height), not copy.
+  [/(?<![-\w])leading(?![-\w])/i, 'superlative ("leading")'],
   [/\bbest[\s-]in[\s-]class\b/i, 'superlative ("best-in-class")'],
   [/\bcutting[\s-]edge\b/i, 'filler ("cutting-edge")'],
   [/\bstate[\s-]of[\s-]the[\s-]art\b/i, 'filler ("state-of-the-art")'],

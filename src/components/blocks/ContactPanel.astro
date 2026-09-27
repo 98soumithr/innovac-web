@@ -1,0 +1,58 @@
+---
+import Button from '../ui/Button.astro';
+import { site, fact } from '../../data/site';
+import { whatsappHref } from '../../lib/whatsapp';
+
+// Carbon panel: WhatsApp, phone, email, plant address, GSTIN and a map facade (no iframe).
+interface Props {
+  class?: string;
+}
+const wa = whatsappHref();
+const address = site.address
+  ? [site.address.street, site.address.locality, `${site.address.city}, ${site.address.region} ${site.address.postalCode}`]
+      .filter(Boolean)
+      .join(', ')
+  : null;
+const rows = [
+  {
+    label: 'Phone',
+    value: fact(site.phone, 'one public phone number'),
+    href: site.phoneE164 ? `tel:${site.phoneE164}` : undefined,
+  },
+  { label: 'Email', value: fact(site.email, 'sales email on the domain'), href: site.email ? `mailto:${site.email}` : undefined },
+  { label: 'Plant', value: address ?? fact(null, 'plant address') },
+  { label: 'GSTIN', value: fact(site.gstin, 'GSTIN') },
+].filter((r) => r.value);
+---
+<aside class:list={['on-dark flex flex-col gap-7 rounded-sm bg-carbon px-6 py-8 text-white lg:px-9 lg:py-10', Astro.props.class]} aria-labelledby="contact-panel-title">
+  <h2 id="contact-panel-title" class="font-display text-[28px] font-semibold uppercase lg:text-[30px]">Talk to us directly</h2>
+  {wa && <Button href={wa} variant="outline-flame" size="field" icon="whatsapp" full>WhatsApp</Button>}
+  <dl class="flex flex-col gap-[18px] text-[16px]">
+    {
+      rows.map((r) => (
+        <div class="flex flex-col gap-1">
+          <dt class="font-mono text-[11px] tracking-[0.14em] text-muted-on-dark uppercase">{r.label}</dt>
+          <dd class="leading-normal break-words">
+            {r.href ? <a href={r.href} class="hover:underline">{r.value}</a> : r.value}
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+  {
+    site.mapsUrl ? (
+      <a
+        href={site.mapsUrl}
+        target="_blank"
+        rel="noopener"
+        class="hatch-dark flex h-40 items-end rounded-sm border border-line-dark p-3 font-mono text-[12px] text-ice hover:underline"
+      >
+        Open the plant location in Google Maps
+      </a>
+    ) : (
+      <div class="hatch-dark flex h-40 items-end rounded-sm border border-line-dark p-3 font-mono text-[11px] text-faint-on-dark">
+        [MAP]
+      </div>
+    )
+  }
+</aside>

@@ -1,0 +1,16 @@
+---
+interface Props {
+  size?: 'md' | 'sm';
+  class?: string;
+}
+const { size = 'md', class: className } = Astro.props;
+---
+<span class:list={['inline-flex items-baseline gap-2.5 whitespace-nowrap', className]}>
+  <span
+    class:list={[
+      'font-display font-bold tracking-[0.04em] text-text-on-dark',
+      size === 'md' ? 'text-[26px] xl:text-[30px]' : 'text-[24px]',
+    ]}
+  >INNOVAC</span>
+  <span class="font-mono text-[11px] tracking-[0.2em] text-ice xl:text-[12px]">CERAMIC</span>
+</span>

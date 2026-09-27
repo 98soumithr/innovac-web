@@ -1,0 +1,15 @@
+---
+interface Props {
+  tone?: 'dark' | 'light';
+  as?: 'p' | 'span' | 'div';
+  class?: string;
+}
+const { tone = 'light', as: Tag = 'p', class: className } = Astro.props;
+---
+<Tag
+  class:list={[
+    'font-mono text-eyebrow uppercase',
+    tone === 'dark' ? 'text-ice' : 'text-flame',
+    className,
+  ]}
+><slot /></Tag>

@@ -1,0 +1,30 @@
+---
+export type Tone = 'carbon' | 'carbon-2' | 'paper' | 'white';
+
+interface Props {
+  tone?: Tone;
+  id?: string;
+  padding?: 'default' | 'strip' | 'none';
+  class?: string;
+  innerClass?: string;
+  'aria-labelledby'?: string;
+}
+const { tone = 'paper', id, padding = 'default', class: className, innerClass, ...rest } = Astro.props;
+
+const tones: Record<Tone, string> = {
+  carbon: 'bg-carbon text-body-on-dark on-dark',
+  'carbon-2': 'bg-carbon-2 text-body-on-dark on-dark',
+  paper: 'bg-paper text-body',
+  white: 'bg-white text-body',
+};
+const paddings = {
+  default: 'py-14 lg:py-28',
+  strip: 'py-0',
+  none: '',
+};
+---
+<section id={id} class:list={[tones[tone], paddings[padding], className]} {...rest}>
+  <div class:list={['container-site reveal', innerClass]}>
+    <slot />
+  </div>
+</section>

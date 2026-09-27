@@ -1,0 +1,27 @@
+---
+// Family letter, H3, hairline and optional "View all", then a 5-column card grid.
+interface Props {
+  letter: string;
+  title: string;
+  href?: string;
+  class?: string;
+}
+const { letter, title, href, class: className } = Astro.props;
+---
+<div class:list={['flex flex-col gap-5', className]}>
+  <div class="flex items-center gap-4">
+    <span class="font-mono text-[13px] text-caption" aria-hidden="true">{letter}</span>
+    <h3 class="font-display text-h3 font-semibold text-ink uppercase">{title}</h3>
+    <span class="h-px grow bg-line-light-strong" aria-hidden="true"></span>
+    {
+      href && (
+        <a href={href} class="flex min-h-11 items-center text-small font-semibold text-flame hover:text-flame-hover hover:underline">
+          View all<span class="sr-only"> {title.toLowerCase()}</span>
+        </a>
+      )
+    }
+  </div>
+  <div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-5">
+    <slot />
+  </div>
+</div>

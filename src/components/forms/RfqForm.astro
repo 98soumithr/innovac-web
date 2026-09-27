@@ -1,0 +1,112 @@
+---
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import { rfqProducts } from '../../data/home';
+import { todo } from '../../data/site';
+import { url } from '../../lib/paths';
+
+// Markup only. Sending (Web3Forms), ?product= pre-fill and inline errors arrive in Phase 6
+// (build-plan). Until then submit is blocked so nothing posts anywhere.
+interface Props {
+  variant?: 'compact' | 'full';
+  product?: string; // pre-selected product slug
+  id?: string;
+}
+const { variant = 'compact', product, id = 'rfq-form' } = Astro.props;
+const full = variant === 'full';
+const f = (name: string) => `${id}-${name}`;
+
+const label = 'text-[14px] font-semibold text-ink';
+const field =
+  'h-13 w-full rounded-sm border border-field-border bg-white px-3.5 text-[16px] text-ink placeholder:text-caption focus-visible:border-flame';
+const pending = todo('RFQ form sending is wired in Phase 6 (Web3Forms)');
+---
+<form
+  id={id}
+  class="grid grid-cols-1 gap-5 md:grid-cols-2"
+  data-rfq-form
+  data-variant={variant}
+  onsubmit="return false"
+>
+  <div class="flex flex-col gap-2">
+    <label for={f('product')} class={label}>Product <span aria-hidden="true">*</span></label>
+    <select id={f('product')} name="product" required class:list={[field, 'appearance-auto']}>
+      {!product && <option value="" disabled selected>Choose a product</option>}
+      {rfqProducts.map((p) => <option value={p.value} selected={p.value === product}>{p.label}</option>)}
+    </select>
+  </div>
+  <div class="flex flex-col gap-2">
+    <label for={f('qty')} class={label}>Quantity</label>
+    <input id={f('qty')} name="quantity" type="text" placeholder="e.g. 2,000 pcs / month" class={field} />
+  </div>
+  <div class="flex flex-col gap-2">
+    <label for={f('name')} class={label}>Name <span aria-hidden="true">*</span></label>
+    <input id={f('name')} name="name" type="text" required autocomplete="name" class={field} />
+  </div>
+  <div class="flex flex-col gap-2">
+    <label for={f('company')} class={label}>Company</label>
+    <input id={f('company')} name="company" type="text" autocomplete="organization" class={field} />
+  </div>
+  <div class="flex flex-col gap-2">
+    <label for={f('phone')} class={label}>Phone <span aria-hidden="true">*</span></label>
+    <input id={f('phone')} name="phone" type="tel" required autocomplete="tel" placeholder="+91" class={field} />
+    <label class="flex min-h-11 items-center gap-2 text-[14px] text-body">
+      <input type="checkbox" name="whatsapp_ok" checked class="h-[18px] w-[18px] accent-flame" />
+      Reply on WhatsApp is fine
+    </label>
+  </div>
+  <div class="flex flex-col gap-2">
+    <label for={f('email')} class={label}>Email</label>
+    <input id={f('email')} name="email" type="email" autocomplete="email" class={field} />
+  </div>
+  {
+    full && (
+      <div class="flex flex-col gap-2 md:col-span-2">
+        <label for={f('city')} class={label}>Delivery city / country</label>
+        <input id={f('city')} name="delivery" type="text" autocomplete="address-level2" class={field} />
+      </div>
+    )
+  }
+  <div class="flex flex-col gap-2 md:col-span-2">
+    <span id={f('file-label')} class={label}>Drawing or photo</span>
+    <input
+      id={f('file')}
+      name="attachment"
+      type="file"
+      multiple
+      accept=".pdf,.dwg,.dxf,.step,.stp,.jpg,.jpeg,.png"
+      aria-labelledby={f('file-label')}
+      class="peer sr-only"
+    />
+    <label
+      for={f('file')}
+      class="flex min-h-24 cursor-pointer flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-sm border-[1.5px] border-dashed border-field-border bg-field-bg px-4 py-4 text-center text-[15px] text-body peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-flame hover:border-ink"
+    >
+      <Icon name="upload" size={22} />
+      <span>Drop files or <span class="font-semibold text-flame">browse</span> · PDF, DWG, DXF, STEP, JPG · up to 25 MB</span>
+    </label>
+  </div>
+  <div class="flex flex-col gap-2 md:col-span-2">
+    <label for={f('msg')} class={label}>Details</label>
+    <textarea
+      id={f('msg')}
+      name="details"
+      rows={full ? 5 : 3}
+      placeholder="Metal and pouring temperature, size, delivery location…"
+      class="w-full resize-y rounded-sm border border-field-border bg-white p-3.5 text-[16px] text-ink placeholder:text-caption focus-visible:border-flame"
+    ></textarea>
+  </div>
+  {
+    full && (
+      <p class="text-[14px] text-body md:col-span-2">
+        By sending this form you agree to us using these details to prepare your quote. See our{' '}
+        <a href={url('/privacy/')} class="text-flame underline hover:text-flame-hover">privacy notice</a>.
+      </p>
+    )
+  }
+  <div class="flex flex-col gap-4 md:col-span-2 md:flex-row md:items-center md:gap-5">
+    <Button type="submit" size="lg">Request quote</Button>
+    <span class="font-mono text-[12px] text-caption">You’ll get a reference number as soon as you send it.</span>
+  </div>
+  {pending && <p class="font-mono text-[12px] text-caption md:col-span-2">{pending}</p>}
+</form>

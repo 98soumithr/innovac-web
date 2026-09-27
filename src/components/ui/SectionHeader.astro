@@ -1,0 +1,50 @@
+---
+import Eyebrow from './Eyebrow.astro';
+
+interface Props {
+  eyebrow?: string;
+  tone?: 'dark' | 'light';
+  id?: string; // id for the H2, to use with aria-labelledby
+  link?: { href: string; label: string };
+  class?: string;
+}
+const { eyebrow, tone = 'light', id, link, class: className } = Astro.props;
+const hasIntro = Astro.slots.has('intro');
+---
+<div
+  class:list={[
+    'flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-12',
+    className,
+  ]}
+>
+  <div class="flex flex-col gap-4">
+    {eyebrow && <Eyebrow tone={tone}>{eyebrow}</Eyebrow>}
+    <h2
+      id={id}
+      class:list={[
+        'font-display text-h2 font-bold uppercase',
+        tone === 'dark' ? 'text-text-on-dark' : 'text-ink',
+      ]}
+    ><slot /></h2>
+  </div>
+  {
+    hasIntro && (
+      <p class:list={['max-w-[460px] text-lead', tone === 'dark' ? 'text-body-on-dark' : 'text-body']}>
+        <slot name="intro" />
+      </p>
+    )
+  }
+  {
+    link && !hasIntro && (
+      <a
+        href={link.href}
+        class:list={[
+          'text-small font-semibold hover:underline',
+          tone === 'dark' ? 'text-ice' : 'text-flame hover:text-flame-hover',
+        ]}
+      >
+        {link.label}
+      </a>
+    )
+  }
+</div>
