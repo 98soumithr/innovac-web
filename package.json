@@ -11,7 +11,8 @@
     "check": "astro check && node scripts/lint-copy.mjs && node scripts/lint-tokens.mjs",
     "todo": "node scripts/todo.mjs",
     "shots": "node scripts/shots.mjs",
-    "test": "playwright test"
+    "test": "playwright test",
+    "seo": "node scripts/seo-audit.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -26,6 +27,8 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
-    "@playwright/test": "^1.63.0"
+    "@playwright/test": "^1.63.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "satori": "^0.33.5"
   }
 }

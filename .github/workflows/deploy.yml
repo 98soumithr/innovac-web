@@ -25,6 +25,7 @@ jobs:
       # Web3Forms access key (public by design): repo Settings → Secrets and variables → Actions → Variables.
       PUBLIC_WEB3FORMS_KEY: ${{ vars.PUBLIC_WEB3FORMS_KEY }}
       PUBLIC_WEB3FORMS_ATTACHMENTS: ${{ vars.PUBLIC_WEB3FORMS_ATTACHMENTS }}
+      PUBLIC_GOATCOUNTER_CODE: ${{ vars.PUBLIC_GOATCOUNTER_CODE }}
     steps:
       - uses: actions/checkout@v7
       - name: Check copy and tokens

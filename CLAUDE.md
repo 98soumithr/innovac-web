@@ -25,6 +25,8 @@ link and asset URL with `url()` from `src/lib/paths.ts`, never a bare `/path`.
   industry page still has a `[[TODO]]`. Must pass before launch (build-plan Phase 9)
 - `npm run check` — `astro check` + `scripts/lint-copy.mjs` + `scripts/lint-tokens.mjs`
 - `npm run todo` — lists every `[[TODO: …]]` placeholder into `docs/OUTSTANDING.md`
+- `npm run seo` — audits dist/ (one H1, unique titles/descriptions, canonical, JSON-LD) → `docs/seo-audit.md`
+- `npm test` — Playwright: RFQ form and smoke tests (every route, one H1, no console errors, axe)
 - `npm run shots` — Playwright screenshots of every route at 390px and 1440px into `.shots/`
 
 ## Hard rules (never break)

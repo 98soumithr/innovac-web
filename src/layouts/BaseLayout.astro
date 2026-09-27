@@ -6,6 +6,7 @@ import Seo from '../components/layout/Seo.astro';
 import SiteHeader from '../components/layout/SiteHeader.astro';
 import SiteFooter from '../components/layout/SiteFooter.astro';
 import MobileActionBar from '../components/layout/MobileActionBar.astro';
+import Analytics from '../components/layout/Analytics.astro';
 import { url } from '../lib/paths';
 
 interface Props {
@@ -14,15 +15,16 @@ interface Props {
   noindex?: boolean;
   actionBar?: boolean; // the mobile WhatsApp / quote bar (hidden on /request-a-quote/)
   whatsappText?: string;
+  jsonLd?: object[];
 }
-const { title, description, noindex, actionBar = true, whatsappText } = Astro.props;
+const { title, description, noindex, actionBar = true, whatsappText, jsonLd } = Astro.props;
 ---
 <!doctype html>
 <html lang="en-IN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <Seo title={title} description={description} noindex={noindex} />
+    <Seo title={title} description={description} noindex={noindex} jsonLd={jsonLd} />
     <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
     <link rel="preload" href={condensed700} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={barlow400} as="font" type="font/woff2" crossorigin />
@@ -38,5 +40,6 @@ const { title, description, noindex, actionBar = true, whatsappText } = Astro.pr
     </main>
     <SiteFooter />
     {actionBar && <MobileActionBar whatsappText={whatsappText} />}
+    <Analytics />
   </body>
 </html>

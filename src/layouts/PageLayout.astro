@@ -12,6 +12,7 @@ interface Props {
   rfqBand?: boolean;
   actionBar?: boolean;
   product?: { slug: string; name: string };
+  jsonLd?: object[];
 }
 const { breadcrumbs, rfqBand = true, product, ...base } = Astro.props;
 ---

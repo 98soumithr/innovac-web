@@ -13,6 +13,7 @@ import Icon from '../ui/Icon.astro';
 import { getProducts, getIndustries, productPath, industryPath, type Product, type Family } from '../../lib/content';
 import { url } from '../../lib/paths';
 import { whatsappHref, whatsappText } from '../../lib/whatsapp';
+import { productLd } from '../../lib/seo';
 
 interface Props {
   product: Product;
@@ -28,6 +29,16 @@ const fill = all.filter((p) => p.data.family === d.family && p.id !== product.id
 const relatedCards = [...related, ...fill].slice(0, 3);
 const industries = (await getIndustries()).filter((i) => d.industries.includes(i.id));
 
+const jsonLd = [
+  productLd(Astro.site!, {
+    slug: product.id,
+    name: d.title,
+    description: d.summary,
+    category: family.data.title,
+    image: d.images.hero ? new URL(d.images.hero.src, Astro.site).href : undefined,
+  }),
+];
+
 const hasSpecs = Boolean(d.specs?.some((s) => s.value) || d.sizes);
 const customTone = hasSpecs ? 'white' : 'paper';
 ---
@@ -40,6 +51,7 @@ const customTone = hasSpecs ? 'white' : 'paper';
     { label: d.shortName },
   ]}
   product={{ slug: product.id, name: d.title.toLowerCase() }}
+  jsonLd={jsonLd}
 >
   <ProductHero
     eyebrow={family.data.title}

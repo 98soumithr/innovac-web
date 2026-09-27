@@ -1,0 +1,29 @@
+---
+// Cookie-less analytics with GoatCounter (site-plan §4.6), loaded only when PUBLIC_GOATCOUNTER_CODE is
+// set. Events: rfq_submit, whatsapp_click, phone_click, email_click, download.
+const code = import.meta.env.PUBLIC_GOATCOUNTER_CODE;
+---
+{
+  code && (
+    <script is:inline async data-goatcounter={`https://${code}.goatcounter.com/count`} src="https://gc.zgo.at/count.js" />
+  )
+}
+<script>
+  type GoatCounter = { count?: (o: { path: string; title: string; event: boolean }) => void };
+
+  function track(name: string) {
+    const gc = (window as unknown as { goatcounter?: GoatCounter }).goatcounter;
+    gc?.count?.({ path: name, title: name, event: true });
+  }
+  (window as unknown as { innovacTrack: typeof track }).innovacTrack = track;
+
+  document.addEventListener('click', (e) => {
+    const a = (e.target as Element | null)?.closest('a');
+    if (!a) return;
+    const href = a.getAttribute('href') ?? '';
+    if (href.includes('wa.me/')) track('whatsapp_click');
+    else if (href.startsWith('tel:')) track('phone_click');
+    else if (href.startsWith('mailto:')) track('email_click');
+    else if (a.hasAttribute('download')) track('download');
+  });
+</script>

@@ -6,7 +6,7 @@ order: 1
 summary: Clean molten-metal samples for lab analysis, in standard sizes or made to your drawing.
 seo:
   title: Ceramic Fibre Sampling Spoon Manufacturer | Innovac
-  description: Ceramic fibre sampling spoons for iron and steel foundries, made in Hyderabad in standard sizes or to your drawing. Request a quote.
+  description: Ceramic fibre sampling spoons for iron and steel foundries, made in our Hyderabad plant in standard sizes or to your drawing. Request a quote.
   primaryKeyword: ceramic fibre sampling spoon
 keyFacts: null
 applications:

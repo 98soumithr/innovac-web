@@ -5,6 +5,8 @@ interface ImportMetaEnv {
   readonly PUBLIC_WEB3FORMS_KEY?: string;
   /** "true" once the Web3Forms plan accepts file attachments. */
   readonly PUBLIC_WEB3FORMS_ATTACHMENTS?: string;
+  /** GoatCounter site code (the part before .goatcounter.com). Analytics are off when unset. */
+  readonly PUBLIC_GOATCOUNTER_CODE?: string;
 }
 
 interface ImportMeta {

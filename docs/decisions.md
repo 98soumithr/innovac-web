@@ -15,3 +15,6 @@ One line per decision, newest last.
 - 2026-09-27 · RFQ: the form posts from the browser to Web3Forms (JSON, or multipart when files are attached). The access key comes from the Actions variable `PUBLIC_WEB3FORMS_KEY`. The drawing upload field shows only when `PUBLIC_WEB3FORMS_ATTACHMENTS=true` (paid plan); until then buyers are told to send drawings on WhatsApp or email with their reference, so no file is ever silently dropped.
 - 2026-09-27 · The RFQ reference (`INV-YYMMDD-XXXX`) is made in the browser and shown on /thank-you/. The note under the button says "as soon as you send it" rather than "by email", since Web3Forms auto-replies need a paid plan.
 - 2026-09-27 · `npm run build` is the preview build; `npm run build:launch` is the strict launch gate.
+- 2026-09-27 · Analytics: GoatCounter (cookie-less, free, supports custom events) instead of Cloudflare Web Analytics, which has no custom events. Loaded only when the Actions variable `PUBLIC_GOATCOUNTER_CODE` is set.
+- 2026-09-27 · OG images are rendered at build time with satori + resvg (Barlow fonts from Fontsource .woff files). Pages without their own image use /og/home.png.
+- 2026-09-27 · JSON-LD emits only facts present in site.ts. LocalBusiness appears once an address is supplied; Product never has offers or ratings.

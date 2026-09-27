@@ -101,6 +101,7 @@ async function submit(form: HTMLFormElement, event: SubmitEvent) {
     });
     const json = (await res.json().catch(() => ({}))) as { success?: boolean };
     if (!res.ok || !json.success) throw new Error(`Web3Forms responded ${res.status}`);
+    (window as unknown as { innovacTrack?: (n: string) => void }).innovacTrack?.('rfq_submit');
     location.assign(`${form.dataset.thanks}?ref=${encodeURIComponent(ref)}`);
   } catch (err) {
     console.warn('RFQ send failed:', err);

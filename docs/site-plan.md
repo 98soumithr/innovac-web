@@ -242,7 +242,7 @@ after 6–8 weeks.
    page, all linking to the matching product URL.
 5. **Associations and directories:** Institute of Indian Foundrymen (IIF) member directory, and regional
    foundry clusters (Coimbatore, Kolhapur, Rajkot, Belgaum). Links from these carry weight.
-6. **Measurement:** Cloudflare Web Analytics (cookie-less) plus these events, all sent via `data-event`
+6. **Measurement:** GoatCounter (cookie-less) plus these events, all sent via `data-event`
    attributes and a tiny script: `rfq_submit`, `whatsapp_click`, `phone_click`, `email_click`,
    `download`. Add GA4 later only if needed.
 
