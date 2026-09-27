@@ -12,3 +12,6 @@ One line per decision, newest last.
 - 2026-09-27 · Extra colour tokens from the approved mockup: `nav-link` #D5DAE3, `line-light-strong` #C9CFD9, `placeholder-light` #E3E7EE, `on-flame-muted` #E6EDFF, `field-bg` #F5F7FB. The mockup's #232833/#262C37 borders use `line-dark`.
 - 2026-09-27 · The body font-size token is `copy` (`text-copy`), because `text-body` is the body colour.
 - 2026-09-27 · `[[TODO]]` placeholders show in dev and on the preview build (`PUBLIC_SHOW_TODOS=true`); the preview is also noindex and disallowed in robots.txt.
+- 2026-09-27 · RFQ: the form posts from the browser to Web3Forms (JSON, or multipart when files are attached). The access key comes from the Actions variable `PUBLIC_WEB3FORMS_KEY`. The drawing upload field shows only when `PUBLIC_WEB3FORMS_ATTACHMENTS=true` (paid plan); until then buyers are told to send drawings on WhatsApp or email with their reference, so no file is ever silently dropped.
+- 2026-09-27 · The RFQ reference (`INV-YYMMDD-XXXX`) is made in the browser and shown on /thank-you/. The note under the button says "as soon as you send it" rather than "by email", since Web3Forms auto-replies need a paid plan.
+- 2026-09-27 · `npm run build` is the preview build; `npm run build:launch` is the strict launch gate.

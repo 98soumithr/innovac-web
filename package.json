@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "check": "astro check && node scripts/lint-copy.mjs && node scripts/lint-tokens.mjs",
     "todo": "node scripts/todo.mjs",
-    "shots": "node scripts/shots.mjs"
+    "shots": "node scripts/shots.mjs",
+    "test": "playwright test"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -24,6 +25,7 @@
     "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "playwright-core": "^1.63.0"
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.63.0"
   }
 }

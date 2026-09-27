@@ -8,7 +8,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { chromium } from 'playwright-core';
+import { chromium } from '@playwright/test';
 
 const args = Object.fromEntries(
   process.argv.slice(2).map((a) => {

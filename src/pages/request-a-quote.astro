@@ -1,0 +1,29 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/blocks/PageHero.astro';
+import Section from '../components/ui/Section.astro';
+import RfqForm from '../components/forms/RfqForm.astro';
+import ContactPanel from '../components/blocks/ContactPanel.astro';
+import { site, fact } from '../data/site';
+
+const reply = fact(site.quoteReplyTime, 'quote reply time');
+---
+<PageLayout
+  title="Request a Quote | Innovac Ceramic"
+  description="Request a quote for ceramic fibre shapes, foundry consumables or filter candles. Only name, phone and product are required. Drawings kept confidential."
+  breadcrumbs={[{ label: 'Request a quote' }]}
+  rfqBand={false}
+  actionBar={false}
+>
+  <PageHero
+    eyebrow="Request a quote"
+    title="Tell us what you need"
+    lead="Only name, phone and product are required. Drawings are kept confidential."
+  >
+    {reply && <p class="font-mono text-[13px] text-muted-on-dark">Quote reply: <span class="text-ice">{reply}</span></p>}
+  </PageHero>
+  <Section tone="white" aria-label="Quote form" innerClass="grid gap-12 lg:grid-cols-12 lg:gap-x-6">
+    <div class="lg:col-span-7"><RfqForm variant="full" id="rfq-page" /></div>
+    <ContactPanel class="lg:col-span-4 lg:col-start-9 lg:self-start" />
+  </Section>
+</PageLayout>
