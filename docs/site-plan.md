@@ -136,22 +136,21 @@ Fields (only 3 are required: **Name, Phone, Product**):
 - Delivery city / country
 - Drawing or photo (multiple files; PDF, DWG, DXF, STEP, STP, JPG, PNG; 25MB total)
 - Details (textarea: metal and pour temperature, sizes, application)
-- A hidden honeypot field and a Cloudflare Turnstile widget (invisible mode)
+- A hidden honeypot field (Web3Forms `botcheck`)
 - Consent line with a link to the privacy page. Submit button: "Request quote".
 
 **Flow:**
-1. Files upload straight from the browser to Vercel Blob through a token route at `/api/upload`.
-   Vercel functions reject request bodies over about 4.5MB, so files must never pass through the function.
-2. The form posts JSON to `/api/rfq`.
-3. `/api/rfq` validates with zod, verifies Turnstile and creates a reference number (`INV-YYMMDD-XXXX`).
-4. It emails sales through Resend: all fields, file links, and the page the buyer came from.
-5. It sends the buyer an auto-reply with the reference number and the stated reply time.
-6. It redirects to `/thank-you/?ref=…`.
+1. The browser validates the fields and creates a reference number (`INV-YYMMDD-XXXX`).
+2. The form posts to Web3Forms with the fields, the reference, and the page the buyer came from.
+   Web3Forms emails sales (and can send the buyer an auto-reply).
+3. On success it redirects to `/thank-you/?ref=…`.
+4. Drawing uploads need a paid Web3Forms plan. Until that is decided, buyers send drawings on WhatsApp or
+   by email (see build-plan Phase 6).
 
 **Errors:** inline, per field. If the API fails, show the error and the WhatsApp alternative, and never
 lose what the buyer typed.
 
-**Retention:** delete uploaded files after 180 days. The privacy page says so.
+**Retention:** if uploads are enabled, delete uploaded files after 180 days. The privacy page says so.
 
 ## 4. SEO strategy
 
@@ -219,7 +218,9 @@ after 6–8 weeks.
 ### 4.5 Technical SEO
 - Pages are statically generated, with `@astrojs/sitemap` (excluding `/styleguide/`, `/thank-you/` and `/404`)
   and a `robots.txt` that points to the sitemap.
-- **301 redirects** from the old Hostinger site, configured in `astro.config.mjs` `redirects` (see §5).
+- **Redirects** from the old Hostinger site, configured in `astro.config.mjs` `redirects` (see §5).
+  GitHub Pages can't send server 301s, so Astro writes a redirect page per old URL (meta refresh plus a
+  canonical link), which Google treats as a permanent redirect.
 - Core Web Vitals budgets, measured on a mobile 4G profile:
   - LCP < 2.0s
   - CLS < 0.05
@@ -227,7 +228,8 @@ after 6–8 weeks.
   - Page JS < 30KB gzipped (the RFQ page < 60KB)
   - Hero image < 180KB
   - Lighthouse ≥ 95 in all four categories
-- Only one domain version: `https://innovacceramic.com/` (no www; 301 from www and from http).
+- Only one domain version: `https://innovacceramic.com/` (no www). GitHub Pages redirects www and http
+  once the custom domain and Enforce HTTPS are set (build-plan Phase 9).
 
 ### 4.6 Launch and off-page
 1. **Search Console:** verify the domain. Check **Security issues** and **Manual actions**, because the old site
@@ -240,16 +242,15 @@ after 6–8 weeks.
    page, all linking to the matching product URL.
 5. **Associations and directories:** Institute of Indian Foundrymen (IIF) member directory, and regional
    foundry clusters (Coimbatore, Kolhapur, Rajkot, Belgaum). Links from these carry weight.
-6. **Measurement:** Vercel Web Analytics (cookie-less) plus these events, all sent via `data-event`
+6. **Measurement:** Cloudflare Web Analytics (cookie-less) plus these events, all sent via `data-event`
    attributes and a tiny script: `rfq_submit`, `whatsapp_click`, `phone_click`, `email_click`,
    `download`. Add GA4 later only if needed.
 
 ## 5. Redirect map (old URLs → new)
+`/about`, `/products` and `/contact` need no entry: GitHub Pages already redirects them to the
+trailing-slash pages.
 ```
-/about            → /about/
 /about-us         → /about/
-/products         → /products/
-/contact          → /contact/
 /crucibles        → /products/crucibles/
 /tap-out-cones    → /products/tap-out-cones/
 /sleeves          → /products/insulating-exothermic-sleeves/

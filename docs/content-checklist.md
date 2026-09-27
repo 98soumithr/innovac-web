@@ -34,4 +34,4 @@ The build can go ahead without these. Each one appears on the site as a `[[TODO]
 - Logo: use the INNOVAC / CERAMIC wordmark from the mockup until a mark is designed
 
 ## Accounts and access
-- ★ Hostinger DNS login · Vercel · Resend (with domain verified) · Cloudflare Turnstile · Google Search Console
+- ★ GoDaddy login (domain) · Web3Forms access key · Google Search Console · Cloudflare (Web Analytics)

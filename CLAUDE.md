@@ -13,8 +13,10 @@ Goal of every page: a qualified **Request a quote** (form or WhatsApp).
 ## Stack
 Astro (current stable) · TypeScript strict · Tailwind CSS v4 (`@tailwindcss/vite`, tokens in `@theme`)
 · Astro content collections (`src/content.config.ts`, zod) · `astro:assets` for images · self-hosted fonts
-via Fontsource · `@astrojs/vercel` adapter (site is static; only `src/pages/api/*` runs on the server)
-· `@astrojs/sitemap` · Resend (email) · Cloudflare Turnstile (spam) · Vercel Blob (drawing uploads).
+via Fontsource · `@astrojs/sitemap` · fully static output (no server code).
+Hosting: **GitHub Pages**, deployed by `.github/workflows/deploy.yml` on push to `main`. The RFQ form posts
+to **Web3Forms** (Phase 6). Until launch the site is served under `/innovac-web/`: build every internal
+link and asset URL with `url()` from `src/lib/paths.ts`, never a bare `/path`.
 
 ## Commands
 - `npm run dev` — dev server on :4321
