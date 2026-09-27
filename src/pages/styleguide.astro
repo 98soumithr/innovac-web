@@ -25,9 +25,15 @@ import RfqBand from '../components/blocks/RfqBand.astro';
 import ContactPanel from '../components/blocks/ContactPanel.astro';
 import DownloadList from '../components/blocks/DownloadList.astro';
 import RfqForm from '../components/forms/RfqForm.astro';
-import { families, filtrationFeature, industries } from '../data/home';
+import { filtrationFeature } from '../data/home';
+import { getProductsByFamily, getIndustries } from '../lib/content';
 import { url } from '../lib/paths';
 
+const families = (await getProductsByFamily()).map(({ family, products }) => ({
+  title: family.data.title,
+  products: products.map((p) => ({ slug: p.id, name: p.data.shortName, summary: p.data.summary })),
+}));
+const industries = (await getIndustries()).map((i) => ({ slug: i.id, title: i.data.shortName, products: i.data.tileProducts }));
 const icons = ['arrow-right', 'chevron', 'whatsapp', 'upload', 'download', 'menu', 'close', 'plus', 'minus', 'check'] as const;
 const colours = [
   'carbon', 'carbon-2', 'carbon-3', 'line-dark', 'line-dark-strong', 'body-on-dark', 'muted-on-dark',

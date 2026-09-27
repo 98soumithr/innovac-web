@@ -1,0 +1,25 @@
+---
+// Families and products share /products/[slug]/ (site-plan §1 routing note).
+import ProductPage from '../../components/templates/ProductPage.astro';
+import FamilyPage from '../../components/templates/FamilyPage.astro';
+import { getFamilies, getProducts, type Family, type Product } from '../../lib/content';
+import { validateContent } from '../../lib/validate';
+
+export async function getStaticPaths() {
+  await validateContent();
+  const [families, products] = await Promise.all([getFamilies(), getProducts()]);
+  return [
+    ...families.map((family) => ({ params: { slug: family.id }, props: { kind: 'family' as const, family } })),
+    ...products.map((product) => ({
+      params: { slug: product.id },
+      props: { kind: 'product' as const, product, family: families.find((f) => f.id === product.data.family)! },
+    })),
+  ];
+}
+
+type Props =
+  | { kind: 'family'; family: Family }
+  | { kind: 'product'; product: Product; family: Family };
+const props = Astro.props as Props;
+---
+{props.kind === 'family' ? <FamilyPage family={props.family} /> : <ProductPage product={props.product} family={props.family} />}

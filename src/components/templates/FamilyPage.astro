@@ -1,0 +1,51 @@
+---
+import { render } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import Section from '../ui/Section.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+import Eyebrow from '../ui/Eyebrow.astro';
+import ProductCard from '../blocks/ProductCard.astro';
+import CustomCard from '../blocks/CustomCard.astro';
+import FaqList from '../blocks/FaqList.astro';
+import { getProducts, productPath, type Family } from '../../lib/content';
+import { url } from '../../lib/paths';
+
+interface Props {
+  family: Family;
+}
+const { family } = Astro.props;
+const d = family.data;
+const { Content } = await render(family);
+const products = (await getProducts()).filter((p) => p.data.family === family.id);
+---
+<PageLayout
+  title={d.seo.title}
+  description={d.seo.description}
+  breadcrumbs={[{ label: 'Products', href: '/products/' }, { label: d.title }]}
+>
+  <section class="on-dark bg-carbon" aria-labelledby="family-title">
+    <div class="container-site flex flex-col gap-6 pt-8 pb-14 lg:pt-12 lg:pb-24">
+      <Eyebrow tone="dark">Product family {d.letter}</Eyebrow>
+      <h1 id="family-title" class="font-display text-display font-bold text-text-on-dark uppercase">{d.title}</h1>
+      <p class="max-w-[640px] text-lead text-body-on-dark">{d.intro}</p>
+    </div>
+  </section>
+
+  <Section tone="paper" aria-labelledby="family-products" innerClass="flex flex-col gap-10">
+    <SectionHeader eyebrow="Products" id="family-products">{products.length === 1 ? 'The product' : `${products.length} products`}</SectionHeader>
+    <div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
+      {products.map((p) => <ProductCard href={url(productPath(p.id))} name={p.data.shortName} summary={p.data.summary} photo={p.data.images.hero} />)}
+      <CustomCard href={url('/custom-ceramic-fibre-shapes/')} class="col-span-2 md:col-span-1" />
+    </div>
+  </Section>
+
+  <Section tone="white" aria-labelledby="choose-title" innerClass="flex flex-col gap-8">
+    <SectionHeader eyebrow="How to choose" id="choose-title">Choosing the right part</SectionHeader>
+    <div class="prose-site text-body"><Content /></div>
+  </Section>
+
+  <Section tone="paper" aria-labelledby="family-faq" innerClass="grid gap-10 lg:grid-cols-12 lg:gap-x-6">
+    <SectionHeader eyebrow="FAQ" id="family-faq" class="lg:col-span-4">Questions buyers ask</SectionHeader>
+    <FaqList items={d.faqs} class="lg:col-span-8" />
+  </Section>
+</PageLayout>

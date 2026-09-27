@@ -1,0 +1,56 @@
+# Ungated PDFs (site-plan §3 Downloads). file: null shows "Available on request" until the PDF exists
+# in public/downloads/. Add certificates only if they are actually held.
+company-profile:
+  title: Company profile
+  type: profile
+  file: null
+datasheet-sampling-spoons:
+  title: Ceramic fibre sampling spoons — datasheet
+  type: datasheet
+  family: foundry-consumables
+  file: null
+datasheet-tap-out-cones:
+  title: Tap-out cones — datasheet
+  type: datasheet
+  family: foundry-consumables
+  file: null
+datasheet-pouring-cups:
+  title: Pouring cups — datasheet
+  type: datasheet
+  family: foundry-consumables
+  file: null
+datasheet-sleeves:
+  title: Insulating and exothermic feeder sleeves — datasheet
+  type: datasheet
+  family: foundry-consumables
+  file: null
+datasheet-crucibles:
+  title: Crucibles — datasheet
+  type: datasheet
+  family: foundry-consumables
+  file: null
+datasheet-filter-candles:
+  title: Ceramic filter candles — datasheet
+  type: datasheet
+  family: hot-gas-filtration
+  file: null
+datasheet-boards:
+  title: Ceramic fibre boards — datasheet
+  type: datasheet
+  family: thermal-insulation
+  file: null
+datasheet-pipe-sections:
+  title: Ceramic fibre pipe sections — datasheet
+  type: datasheet
+  family: thermal-insulation
+  file: null
+datasheet-gaskets:
+  title: Ceramic fibre gaskets — datasheet
+  type: datasheet
+  family: thermal-insulation
+  file: null
+datasheet-burner-shapes:
+  title: Burner shapes — datasheet
+  type: datasheet
+  family: thermal-insulation
+  file: null

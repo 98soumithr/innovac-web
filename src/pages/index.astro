@@ -16,11 +16,13 @@ import IndustryTile from '../components/blocks/IndustryTile.astro';
 import RfqForm from '../components/forms/RfqForm.astro';
 import ContactPanel from '../components/blocks/ContactPanel.astro';
 import { site, fact, todo } from '../data/site';
-import { families, filtrationFeature, industries } from '../data/home';
+import { filtrationFeature } from '../data/home';
+import { getProductsByFamily, getIndustries, productPath, industryPath } from '../lib/content';
 import { url } from '../lib/paths';
 import { whatsappHref } from '../lib/whatsapp';
 
-const [foundry, filtration, insulation] = families;
+const groups = (await getProductsByFamily()).filter((g) => g.products.length > 0);
+const industries = await getIndustries();
 
 const quoteReply = fact(site.quoteReplyTime, 'quote reply time');
 const certificate = site.certificates[0]?.name ?? todo('ISO certificate, only if held');
@@ -63,24 +65,30 @@ const certificate = site.certificates[0]?.name ?? todo('ISO certificate, only if
       <Fragment slot="intro">Every line is available in standard sizes, or made to your drawing, sample or sketch.</Fragment>
     </SectionHeader>
 
-    <ProductFamily letter={foundry.letter} title={foundry.title} href={url(`/products/${foundry.slug}/`)}>
-      {foundry.products.map((p) => <ProductCard href={url(`/products/${p.slug}/`)} name={p.name} summary={p.summary} />)}
-    </ProductFamily>
-
-    <ProductFamily letter={filtration.letter} title={filtration.title}>
-      {filtration.products.map((p) => <ProductCard href={url(`/products/${p.slug}/`)} name={p.name} summary={p.summary} />)}
-      <FeaturePanel
-        title={filtrationFeature.title}
-        text={filtrationFeature.text}
-        items={filtrationFeature.applications}
-        itemsLabel="Where filter candles are used"
-      />
-    </ProductFamily>
-
-    <ProductFamily letter={insulation.letter} title={insulation.title} href={url(`/products/${insulation.slug}/`)}>
-      {insulation.products.map((p) => <ProductCard href={url(`/products/${p.slug}/`)} name={p.name} summary={p.summary} />)}
-      <CustomCard href={url('/custom-ceramic-fibre-shapes/')} class="col-span-2 md:col-span-1" />
-    </ProductFamily>
+    {
+      groups.map(({ family, products }) => (
+        <ProductFamily
+          letter={family.data.letter}
+          title={family.data.title}
+          href={family.id === 'hot-gas-filtration' ? undefined : url(productPath(family.id))}
+        >
+          {products.map((p) => (
+            <ProductCard href={url(productPath(p.id))} name={p.data.shortName} summary={p.data.summary} photo={p.data.images.hero} />
+          ))}
+          {family.id === 'hot-gas-filtration' && (
+            <FeaturePanel
+              title={filtrationFeature.title}
+              text={filtrationFeature.text}
+              items={filtrationFeature.applications}
+              itemsLabel="Where filter candles are used"
+            />
+          )}
+          {family.id === 'thermal-insulation' && (
+            <CustomCard href={url('/custom-ceramic-fibre-shapes/')} class="col-span-2 md:col-span-1" />
+          )}
+        </ProductFamily>
+      ))
+    }
   </Section>
 
   <!-- 4. Plant & Quality -->
@@ -110,7 +118,7 @@ const certificate = site.certificates[0]?.name ?? todo('ISO certificate, only if
   <Section tone="paper" id="industries" aria-labelledby="industries-title" innerClass="flex flex-col gap-12">
     <SectionHeader eyebrow="03 — Industries" id="industries-title">Who we supply</SectionHeader>
     <div class="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-5">
-      {industries.map((i) => <IndustryTile href={url(`/industries/${i.slug}/`)} title={i.title} products={i.products} />)}
+      {industries.map((i) => <IndustryTile href={url(industryPath(i.id))} title={i.data.shortName} products={i.data.tileProducts} />)}
     </div>
   </Section>
 

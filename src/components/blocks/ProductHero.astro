@@ -1,0 +1,65 @@
+---
+import Button from '../ui/Button.astro';
+import Eyebrow from '../ui/Eyebrow.astro';
+import PhotoFrame from '../ui/PhotoFrame.astro';
+import TemperatureRuler from '../ui/TemperatureRuler.astro';
+import type { ImageMetadata } from 'astro';
+
+// Product hero (site-plan §3): 6/6 split, key facts, quote + WhatsApp, main photo and two thumbnails.
+interface Props {
+  eyebrow: string;
+  title: string;
+  summary: string;
+  keyFacts?: { label: string; value: string }[] | null;
+  quoteHref: string;
+  whatsapp?: string | null;
+  photo?: ImageMetadata;
+  gallery?: ImageMetadata[];
+  photoAlt?: string;
+  placeholder: string;
+}
+const { eyebrow, title, summary, keyFacts, quoteHref, whatsapp, photo, gallery = [], photoAlt, placeholder } = Astro.props;
+---
+<section class="on-dark relative bg-carbon" aria-labelledby="product-title">
+  <div class="container-site grid gap-10 pt-8 pb-24 lg:grid-cols-12 lg:gap-x-6 lg:pt-12 lg:pb-32">
+    <div class="flex flex-col gap-6 lg:col-span-6 lg:pt-6">
+      <Eyebrow tone="dark">{eyebrow}</Eyebrow>
+      <h1 id="product-title" class="font-display text-[clamp(44px,5.4vw,76px)] leading-[0.95] font-bold text-text-on-dark uppercase">
+        {title}
+      </h1>
+      <p class="max-w-[560px] text-lead text-body-on-dark">{summary}</p>
+      {
+        keyFacts && keyFacts.length > 0 && (
+          <ul class="flex flex-wrap gap-2">
+            {keyFacts.map((f) => (
+              <li class="rounded-sm border border-line-dark px-3 py-2 font-mono text-[12px] text-body-on-dark">
+                <span class="text-muted-on-dark">{f.label}</span> <span class="text-ice">{f.value}</span>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+      <div class="flex flex-col gap-3 pt-2 md:flex-row md:flex-wrap md:items-center md:gap-4">
+        <Button href={quoteHref} size="lg" trailingIcon="arrow-right" data-event="rfq_start">Request a quote</Button>
+        {whatsapp && <Button href={whatsapp} size="lg" variant="outline-dark" icon="whatsapp" data-event="whatsapp_click">WhatsApp</Button>}
+      </div>
+    </div>
+    <div class="flex flex-col gap-3 lg:col-span-6 lg:gap-4">
+      <PhotoFrame
+        src={photo}
+        alt={photoAlt}
+        caption={placeholder}
+        loading="eager"
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        class="h-72 md:h-[420px]"
+      />
+      <div class="grid grid-cols-2 gap-3 lg:gap-4">
+        <PhotoFrame src={gallery[0]} alt="" caption="macro detail of texture and edge" class="h-32 md:h-40" />
+        <PhotoFrame src={gallery[1]} alt="" caption="in use at the plant" class="h-32 md:h-40" />
+      </div>
+    </div>
+  </div>
+  <div class="container-site absolute inset-x-0 bottom-7">
+    <TemperatureRuler />
+  </div>
+</section>

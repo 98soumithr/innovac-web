@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "PUBLIC_SHOW_TODOS=${PUBLIC_SHOW_TODOS:-true} astro build",
+    "build:launch": "PUBLIC_SHOW_TODOS=false astro build",
     "preview": "astro preview",
     "check": "astro check && node scripts/lint-copy.mjs && node scripts/lint-tokens.mjs",
     "todo": "node scripts/todo.mjs",

@@ -20,7 +20,9 @@ link and asset URL with `url()` from `src/lib/paths.ts`, never a bare `/path`.
 
 ## Commands
 - `npm run dev` — dev server on :4321
-- `npm run build` — must pass before any commit
+- `npm run build` — preview build (shows `[[TODO]]`s); must pass before any commit
+- `npm run build:launch` — launch build: hides TODOs, drops draft products, and fails while any family or
+  industry page still has a `[[TODO]]`. Must pass before launch (build-plan Phase 9)
 - `npm run check` — `astro check` + `scripts/lint-copy.mjs` + `scripts/lint-tokens.mjs`
 - `npm run todo` — lists every `[[TODO: …]]` placeholder into `docs/OUTSTANDING.md`
 - `npm run shots` — Playwright screenshots of every route at 390px and 1440px into `.shots/`

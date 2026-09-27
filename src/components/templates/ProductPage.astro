@@ -1,0 +1,146 @@
+---
+import { render } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import ProductHero from '../blocks/ProductHero.astro';
+import Section from '../ui/Section.astro';
+import SectionHeader from '../ui/SectionHeader.astro';
+import SpecTable from '../blocks/SpecTable.astro';
+import SizesTable from '../blocks/SizesTable.astro';
+import QualityChecks from '../blocks/QualityChecks.astro';
+import FaqList from '../blocks/FaqList.astro';
+import ProductCard from '../blocks/ProductCard.astro';
+import Icon from '../ui/Icon.astro';
+import { getProducts, getIndustries, productPath, industryPath, type Product, type Family } from '../../lib/content';
+import { url } from '../../lib/paths';
+import { whatsappHref, whatsappText } from '../../lib/whatsapp';
+
+interface Props {
+  product: Product;
+  family: Family;
+}
+const { product, family } = Astro.props;
+const d = product.data;
+const { Content } = await render(product);
+
+const all = await getProducts();
+const related = d.related.map((s) => all.find((p) => p.id === s)).filter((p): p is Product => Boolean(p));
+const fill = all.filter((p) => p.data.family === d.family && p.id !== product.id && !d.related.includes(p.id));
+const relatedCards = [...related, ...fill].slice(0, 3);
+const industries = (await getIndustries()).filter((i) => d.industries.includes(i.id));
+
+const hasSpecs = Boolean(d.specs?.some((s) => s.value) || d.sizes);
+const customTone = hasSpecs ? 'white' : 'paper';
+---
+<PageLayout
+  title={d.seo.title}
+  description={d.seo.description}
+  breadcrumbs={[
+    { label: 'Products', href: '/products/' },
+    { label: family.data.title, href: productPath(family.id) },
+    { label: d.shortName },
+  ]}
+  product={{ slug: product.id, name: d.title.toLowerCase() }}
+>
+  <ProductHero
+    eyebrow={family.data.title}
+    title={d.title}
+    summary={d.summary}
+    keyFacts={d.keyFacts}
+    quoteHref={url(`/request-a-quote/?product=${product.id}`)}
+    whatsapp={whatsappHref(whatsappText(d.title.toLowerCase()))}
+    photo={d.images.hero}
+    gallery={d.images.gallery}
+    photoAlt={`${d.title} – studio photo`}
+    placeholder={d.images.placeholder}
+  />
+
+  <!-- What it does -->
+  <Section tone="white" aria-labelledby="what-title" innerClass="grid gap-12 lg:grid-cols-12 lg:gap-x-6">
+    <div class="flex flex-col gap-6 lg:col-span-7">
+      <SectionHeader eyebrow="What it does" id="what-title">{d.shortName}</SectionHeader>
+      <div class="prose-site text-body"><Content /></div>
+    </div>
+    <aside class="flex flex-col gap-4 lg:col-span-4 lg:col-start-9" aria-labelledby="used-title">
+      <h3 id="used-title" class="font-display text-h3 font-semibold text-ink uppercase">Where it’s used</h3>
+      <ul class="border-t border-line-light">
+        {d.applications.map((a) => <li class="border-b border-line-light py-3 text-[16px] text-body">{a}</li>)}
+      </ul>
+      {
+        industries.length > 0 && (
+          <p class="flex flex-wrap gap-x-4 gap-y-2 font-mono text-[12px] text-caption">
+            Industries:
+            {industries.map((i) => (
+              <a href={url(industryPath(i.id))} class="text-flame hover:text-flame-hover hover:underline">{i.data.shortName}</a>
+            ))}
+          </p>
+        )
+      }
+    </aside>
+  </Section>
+
+  <!-- Specifications (only when provided) -->
+  {
+    hasSpecs && (
+      <Section tone="paper" aria-labelledby="specs-title" innerClass="flex flex-col gap-10">
+        <SectionHeader eyebrow="Specifications" id="specs-title">Typical values and sizes</SectionHeader>
+        <div class="grid gap-12 lg:grid-cols-2">
+          {d.specs && <SpecTable rows={d.specs} />}
+          {d.sizes && <SizesTable columns={d.sizes.columns} rows={d.sizes.rows} />}
+        </div>
+        <p class="font-mono text-[13px] text-caption">Other sizes and grades made to your drawing.</p>
+      </Section>
+    )
+  }
+
+  <!-- Customisation -->
+  <Section tone={customTone} aria-labelledby="custom-title" innerClass="grid gap-10 lg:grid-cols-12 lg:gap-x-6">
+    <div class="flex flex-col gap-6 lg:col-span-5">
+      <SectionHeader eyebrow="Customisation" id="custom-title">Made to your drawing</SectionHeader>
+      <p class="text-lead text-body">Standard sizes suit most jobs. When they don’t, we make the part to your drawing, sample or sketch.</p>
+      <a href={url('/custom-ceramic-fibre-shapes/')} class="inline-flex min-h-11 items-center gap-2 font-semibold text-flame hover:text-flame-hover hover:underline">
+        Custom ceramic fibre shapes <Icon name="arrow-right" size={16} stroke={2} />
+      </a>
+    </div>
+    <ul class="grid content-start gap-x-6 border-t border-line-light md:grid-cols-2 lg:col-span-6 lg:col-start-7">
+      {
+        d.customisation.map((c) => (
+          <li class="flex items-center gap-3 border-b border-line-light py-4 text-[16px] text-ink">
+            <Icon name="check" size={18} class="text-flame" /> {c}
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- Quality -->
+  <Section tone="carbon" aria-labelledby="quality-title" innerClass="grid gap-10 lg:grid-cols-12 lg:gap-x-6">
+    <div class="flex flex-col gap-6 lg:col-span-5">
+      <SectionHeader eyebrow="Quality" tone="dark" id="quality-title">Checked before dispatch</SectionHeader>
+      <p class="text-lead">Test report available with every order.</p>
+      <a href={url('/plant-and-quality/')} class="inline-flex min-h-11 items-center gap-2 font-semibold text-ice hover:underline">
+        Plant &amp; Quality <Icon name="arrow-right" size={16} stroke={2} />
+      </a>
+    </div>
+    <QualityChecks class="lg:col-span-6 lg:col-start-7" />
+  </Section>
+
+  <!-- FAQ -->
+  <Section tone="white" aria-labelledby="faq-title" innerClass="grid gap-10 lg:grid-cols-12 lg:gap-x-6">
+    <SectionHeader eyebrow="FAQ" id="faq-title" class="lg:col-span-4">Questions buyers ask</SectionHeader>
+    <FaqList items={d.faqs} class="lg:col-span-8" />
+  </Section>
+
+  <!-- Related -->
+  {
+    relatedCards.length > 0 && (
+      <Section tone="paper" aria-labelledby="related-title" innerClass="flex flex-col gap-10">
+        <SectionHeader eyebrow="Related products" id="related-title" link={{ href: url(productPath(family.id)), label: `All ${family.data.title.toLowerCase()}` }}>
+          You may also need
+        </SectionHeader>
+        <div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
+          {relatedCards.map((p) => <ProductCard href={url(productPath(p.id))} name={p.data.shortName} summary={p.data.summary} photo={p.data.images.hero} />)}
+        </div>
+      </Section>
+    )
+  }
+</PageLayout>

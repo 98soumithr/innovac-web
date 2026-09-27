@@ -1,7 +1,7 @@
 ---
 import Button from '../ui/Button.astro';
 import Icon from '../ui/Icon.astro';
-import { rfqProducts } from '../../data/home';
+import { getProducts } from '../../lib/content';
 import { todo } from '../../data/site';
 import { url } from '../../lib/paths';
 
@@ -14,6 +14,11 @@ interface Props {
 }
 const { variant = 'compact', product, id = 'rfq-form' } = Astro.props;
 const full = variant === 'full';
+const rfqProducts = [
+  ...(await getProducts()).map((p) => ({ value: p.id, label: p.data.shortName })),
+  { value: 'custom-shape', label: 'Custom shape' },
+  { value: 'other', label: 'Other' },
+];
 const f = (name: string) => `${id}-${name}`;
 
 const label = 'text-[14px] leading-[1.2] font-semibold text-ink';
