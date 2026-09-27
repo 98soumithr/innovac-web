@@ -18,8 +18,10 @@ Run on 2026-09-27 against the preview build (`npm run build`: TODOs visible, noi
 | `npm run build:launch` | Fails by design until the family and industry `[[TODO]]`s are filled (see below) |
 | `npm audit --omit=dev` | 0 vulnerabilities |
 
-LCP on the local server was 2.1–2.4 s against the 2.0 s budget; the local server sends HTML uncompressed.
-Re-measure on the GitHub Pages preview (gzip + CDN) and again after launch with real photos.
+| Lighthouse mobile, **live GitHub Pages preview** | `/` perf 99, LCP 1.8 s, CLS 0 · `/products/tap-out-cones/` perf 99, LCP 1.6 s, CLS 0 · a11y and best practices 100 · SEO 63 only from the preview's noindex |
+
+The local server measured LCP at 2.1–2.4 s because it sends HTML uncompressed; the live preview (gzip + CDN)
+is inside the 2.0 s budget. Re-measure after launch with real photos.
 
 ## What needs Innovac before launch
 
