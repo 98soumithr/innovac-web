@@ -53,8 +53,7 @@ Supply these (see docs/content-checklist.md), then fill them in `src/data/site.t
 - plants supplied — src/pages/index.astro:56
 - quality checks with method or instrument and frequency (site.ts → qualityChecks) — src/pages/plant-and-quality.astro:17
 - quality checks you actually run (site.ts → qualityChecks) — src/components/blocks/QualityChecks.astro:10
-- quote reply time — src/pages/index.astro:27, src/pages/thank-you.astro:10
-- RFQ form sending is wired in Phase 6 (Web3Forms) — src/components/forms/RfqForm.astro:27
+- quote reply time — src/pages/index.astro:27, src/pages/request-a-quote.astro:9, src/pages/thank-you.astro:10
 - sales email on the domain — src/components/blocks/ContactPanel.astro:22
 - sleeve material, typical sizes, and the range of feeder diameters we can supply — src/content/products/insulating-exothermic-sleeves.md:54
 - standard board sizes and thicknesses, grades, densities and classification temperatures — src/content/products/ceramic-fibre-boards.md:57

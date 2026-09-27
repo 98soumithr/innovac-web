@@ -6,7 +6,7 @@
 @import "@fontsource/barlow/latin-400.css";
 @import "@fontsource/barlow/latin-500.css";
 @import "@fontsource/barlow/latin-600.css";
-@import "@fontsource-variable/jetbrains-mono/wght.css";
+@import "@fontsource/jetbrains-mono/latin-400.css";
 
 /* Size-adjusted local fallbacks keep layout shift near zero while the web fonts load. */
 @font-face {
@@ -70,7 +70,7 @@
   /* §2 typography */
   --font-display: "Barlow Condensed", "Barlow Condensed Fallback", "Arial Narrow", sans-serif;
   --font-sans: "Barlow", "Barlow Fallback", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono Variable", "JetBrains Mono Fallback", ui-monospace, monospace;
+  --font-mono: "JetBrains Mono", "JetBrains Mono Fallback", ui-monospace, monospace;
 
   --text-display: clamp(46px, 6.4vw, 92px);
   --text-display--line-height: 0.95;

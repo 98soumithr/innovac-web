@@ -55,7 +55,7 @@ Define these once in `src/styles/global.css` inside `@theme`. Components use tok
 ## 2. Typography
 
 Self-host with Fontsource: `@fontsource/barlow-condensed` (600, 700), `@fontsource/barlow` (400, 500, 600),
-`@fontsource-variable/jetbrains-mono`. Preload only the Barlow Condensed 700 and Barlow 400 latin subsets.
+`@fontsource/jetbrains-mono` (400). Preload only the Barlow Condensed 700 and Barlow 400 latin subsets.
 Use `font-display: swap` and set size-adjusted fallbacks to keep CLS near zero.
 
 | Role | Font | Size (mobile → desktop) | Line height | Style |
