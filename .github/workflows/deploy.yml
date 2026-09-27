@@ -1,0 +1,44 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # Preview on https://98soumithr.github.io/innovac-web/ until launch.
+      # At launch (build-plan Phase 9): delete BASE_PATH and PUBLIC_SHOW_TODOS, and add public/CNAME.
+      BASE_PATH: /innovac-web
+      PUBLIC_SHOW_TODOS: 'true'
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check copy and tokens
+        run: |
+          node scripts/lint-copy.mjs
+          node scripts/lint-tokens.mjs
+      - uses: withastro/action@v6
+        with:
+          node-version: 22
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5

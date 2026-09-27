@@ -1,0 +1,205 @@
+@import "tailwindcss";
+
+/* Fonts: self-hosted via Fontsource (design-system §2). Latin subsets only. */
+@import "@fontsource/barlow-condensed/latin-600.css";
+@import "@fontsource/barlow-condensed/latin-700.css";
+@import "@fontsource/barlow/latin-400.css";
+@import "@fontsource/barlow/latin-500.css";
+@import "@fontsource/barlow/latin-600.css";
+@import "@fontsource-variable/jetbrains-mono/wght.css";
+
+/* Size-adjusted local fallbacks keep layout shift near zero while the web fonts load. */
+@font-face {
+  font-family: "Barlow Condensed Fallback";
+  src: local("Arial Narrow"), local("ArialNarrow"), local("Roboto Condensed"), local("Arial");
+  size-adjust: 96%;
+  ascent-override: 104%;
+  descent-override: 21%;
+}
+@font-face {
+  font-family: "Barlow Fallback";
+  src: local("Arial"), local("Helvetica"), local("Roboto");
+  size-adjust: 94%;
+  ascent-override: 106%;
+  descent-override: 21%;
+}
+@font-face {
+  font-family: "JetBrains Mono Fallback";
+  src: local("Menlo"), local("Consolas"), local("Courier New");
+  size-adjust: 100%;
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Design tokens — "Blue Flame" v1 (docs/design-system.md). Components use these classes only;
+   scripts/lint-tokens.mjs rejects raw colour values outside this file.
+   --------------------------------------------------------------------------------------------- */
+@theme {
+  /* Reset Tailwind's palette so only the brand tokens exist. */
+  --color-*: initial;
+
+  /* §1 colour tokens */
+  --color-carbon: #0F1115;
+  --color-carbon-2: #151920;
+  --color-carbon-3: #1A1F28;
+  --color-line-dark: #2A303B;
+  --color-line-dark-strong: #3A4250;
+  --color-text-on-dark: #FFFFFF;
+  --color-body-on-dark: #B9C0CC;
+  --color-muted-on-dark: #9AA3B2;
+  --color-faint-on-dark: #8A93A3;
+  --color-flame: #1F5BF0;
+  --color-flame-hover: #1646C0;
+  --color-ice: #9CC2FF;
+  --color-paper: #F2F4F7;
+  --color-white: #FFFFFF;
+  --color-line-light: #DDE2EA;
+  --color-field-border: #7A8494;
+  --color-ink: #0F1115;
+  --color-body: #4A5260;
+  --color-caption: #5B6372;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* Extra colours taken from the approved mockup (see docs/decisions.md). */
+  --color-nav-link: #D5DAE3;          /* nav links on dark (design-system §5 states) */
+  --color-line-light-strong: #C9CFD9; /* family hairline on paper */
+  --color-placeholder-light: #E3E7EE; /* hatched photo placeholder on light (§4) */
+  --color-on-flame-muted: #E6EDFF;    /* secondary text on a flame fill */
+  --color-field-bg: #F5F7FB;          /* upload drop zone */
+
+  /* §2 typography */
+  --font-display: "Barlow Condensed", "Barlow Condensed Fallback", "Arial Narrow", sans-serif;
+  --font-sans: "Barlow", "Barlow Fallback", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono Fallback", ui-monospace, monospace;
+
+  --text-display: clamp(46px, 6.4vw, 92px);
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.005em;
+  --text-h2: clamp(36px, 4.2vw, 60px);
+  --text-h2--line-height: 1;
+  --text-h3: clamp(22px, 2vw, 28px);
+  --text-h3--line-height: 1.05;
+  --text-h3--letter-spacing: 0.02em;
+  --text-stat: clamp(34px, 3.6vw, 52px);
+  --text-stat--line-height: 1;
+  --text-lead: clamp(18px, 1.4vw, 20px);
+  --text-lead--line-height: 1.55;
+  --text-copy: clamp(16px, 1.2vw, 17px);
+  --text-copy--line-height: 1.6;
+  --text-small: 15px;
+  --text-small--line-height: 1.5;
+  --text-button: 17px;
+  --text-button--line-height: 1;
+  --text-eyebrow: clamp(11px, 0.9vw, 13px);
+  --text-eyebrow--line-height: 1.4;
+  --text-eyebrow--letter-spacing: 0.18em;
+  --text-data: 14px;
+  --text-data--line-height: 1.5;
+
+  /* §3 layout: breakpoints 390 (base), 768, 1024, 1280, 1440 */
+  --breakpoint-*: initial;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 90rem;
+
+  /* Spacing: Tailwind's 4px base covers the 4…112px scale (p-1 … p-28). */
+  --spacing: 4px;
+
+  /* Radius: 2px on everything; full circles only for dots and icon buttons. */
+  --radius-*: initial;
+  --radius-sm: 2px;
+  --radius-full: 9999px;
+
+  /* §7 motion */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --animate-reveal: reveal 240ms var(--ease-out) both;
+  --animate-tick: tick 400ms var(--ease-out) both;
+
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes tick {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-carbon font-sans text-copy text-ink antialiased;
+  }
+  /* Focus ring: ice on dark surfaces, flame on light (design-system §1). */
+  :focus-visible {
+    outline: 2px solid var(--color-flame);
+    outline-offset: 2px;
+  }
+  .on-dark :focus-visible,
+  .on-dark:focus-visible {
+    outline-color: var(--color-ice);
+  }
+  ::selection {
+    background: var(--color-flame);
+    color: var(--color-white);
+  }
+}
+
+@layer components {
+  /* Hatched photo placeholders (design-system §4.5) */
+  .hatch-dark {
+    background-color: var(--color-carbon-3);
+    background-image: repeating-linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-ice) 7%, transparent) 0 2px,
+      transparent 2px 14px
+    );
+  }
+  .hatch-light {
+    background-color: var(--color-placeholder-light);
+    background-image: repeating-linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-carbon) 5%, transparent) 0 2px,
+      transparent 2px 14px
+    );
+  }
+}
+
+@utility container-site {
+  width: 100%;
+  max-width: calc(1280px + 2 * 80px);
+  margin-inline: auto;
+  padding-inline: 20px;
+  @media (width >= 48rem) {
+    padding-inline: 40px;
+  }
+  @media (width >= 80rem) {
+    padding-inline: 80px;
+  }
+}
+
+/* Sections fade and rise 8px on entering the viewport, only where scroll timelines exist. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
