@@ -19,6 +19,7 @@ Supply these (see docs/content-checklist.md), then fill them in `src/data/site.t
 - `capacity`
 - `plantsSupplied`
 - `productLines`
+- `plantArea`
 - `quoteReplyTime`
 - `linkedin`
 - `indiamart`
@@ -28,13 +29,43 @@ Supply these (see docs/content-checklist.md), then fill them in `src/data/site.t
 
 ## Placeholders in templates and content
 
-- capacity — src/pages/index.astro:50
-- GSTIN — src/components/blocks/ContactPanel.astro:24, src/components/layout/SiteFooter.astro:7
-- ISO certificate, only if held — src/pages/index.astro:26
+- board grades and maximum service temperatures suited to steel plant use — src/content/industries/steel-foundries-and-steel-plants.md:38
+- board grades, densities and service temperature limits the client can confirm — src/content/industries/furnace-and-kiln-builders.md:38
+- candle grades, standard sizes and maximum gas temperature for the family overview — src/content/families/hot-gas-filtration.md:31
+- candle sizes, operating temperature limit and typical filtration duties the client can confirm — src/content/industries/glass-cement-and-process-plants.md:41
+- capacity — src/pages/index.astro:52, src/pages/plant-and-quality.astro:14
+- certificates held: name, number, issuing body, PDF (only if held) — src/pages/plant-and-quality.astro:18
+- confirm whether export can be mentioned — src/pages/plant-and-quality.astro:19
+- confirm which products are held in stock and typical lead time per product — src/content/families/foundry-consumables.md:35
+- crucible material type — src/content/products/crucibles.md:48
+- crucible material type, sizes and capacities, and the metals and temperatures each crucible is rated for — src/content/products/crucibles.md:52
+- email for privacy requests — src/pages/privacy.astro:7
+- founding story: year, founders or leadership (if they want names shown) — src/pages/about.astro:19
+- frequency — src/pages/plant-and-quality.astro:65
+- grades, densities and classification temperatures across the insulation range — src/content/families/thermal-insulation.md:35
+- GSTIN — src/components/blocks/ContactPanel.astro:24, src/components/layout/SiteFooter.astro:7, src/pages/about.astro:15
+- have this notice reviewed before launch — src/pages/privacy.astro:8
+- ISO certificate, only if held — src/pages/index.astro:28
+- method — src/pages/plant-and-quality.astro:64
 - one public phone number — src/components/blocks/ContactPanel.astro:19
-- plant address — src/components/blocks/ContactPanel.astro:23
-- plants supplied — src/pages/index.astro:54
+- plant address — src/components/blocks/ContactPanel.astro:23, src/pages/about.astro:11, src/pages/plant-and-quality.astro:13
+- plant area — src/pages/plant-and-quality.astro:15
+- plants supplied — src/pages/index.astro:56
+- quality checks with method or instrument and frequency (site.ts → qualityChecks) — src/pages/plant-and-quality.astro:17
 - quality checks you actually run (site.ts → qualityChecks) — src/components/blocks/QualityChecks.astro:10
-- quote reply time — src/pages/index.astro:25
-- RFQ form sending is wired in Phase 6 (Web3Forms) — src/components/forms/RfqForm.astro:22
+- quote reply time — src/pages/index.astro:27, src/pages/thank-you.astro:10
+- RFQ form sending is wired in Phase 6 (Web3Forms) — src/components/forms/RfqForm.astro:27
 - sales email on the domain — src/components/blocks/ContactPanel.astro:22
+- sleeve material, typical sizes, and the range of feeder diameters we can supply — src/content/products/insulating-exothermic-sleeves.md:54
+- standard board sizes and thicknesses, grades, densities and classification temperatures — src/content/products/ceramic-fibre-boards.md:57
+- standard burner block sizes, grades and maximum service temperature — src/content/products/burner-shapes.md:55
+- standard candle sizes, grades, maximum gas temperature and any filtration performance data — src/content/products/ceramic-filter-candles.md:58
+- standard gasket thicknesses, grades and maximum service temperature — src/content/products/ceramic-fibre-gaskets.md:56
+- standard pipe diameters and thicknesses, grades and maximum service temperature — src/content/products/ceramic-fibre-pipe-sections.md:55
+- standard tolerances we can hold on custom shapes — src/pages/custom-ceramic-fibre-shapes.astro:18
+- typical cone, cup and sleeve size ranges for iron foundries, if the client wants them shown — src/content/industries/iron-foundries.md:39
+- typical sizes, grades and the maximum metal temperature the cone is rated for — src/content/products/tap-out-cones.md:55
+- typical sizes, grades and the maximum metal temperature the cup is rated for — src/content/products/pouring-cups.md:56
+- typical sizes, grades and the maximum metal temperature the spoon is rated for — src/content/products/ceramic-fibre-sampling-spoons.md:53
+- which non-ferrous metals and alloys the crucibles, cones and cups are suited to — src/content/industries/non-ferrous-foundries.md:38
+- working hours — src/pages/contact.astro:10

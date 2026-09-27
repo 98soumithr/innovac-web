@@ -1,0 +1,35 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/blocks/PageHero.astro';
+import Section from '../components/ui/Section.astro';
+import Button from '../components/ui/Button.astro';
+import { site, fact } from '../data/site';
+import { url } from '../lib/paths';
+import { whatsappHref } from '../lib/whatsapp';
+
+const reply = fact(site.quoteReplyTime, 'quote reply time');
+const wa = whatsappHref();
+---
+<PageLayout title="Thank You | Innovac Ceramic" noindex rfqBand={false} actionBar={false}>
+  <PageHero eyebrow="Request received" title="Thank you. We have your request.">
+    <p class="font-mono text-[14px] text-muted-on-dark">
+      Your reference: <span class="text-ice" data-ref>—</span>
+    </p>
+  </PageHero>
+  <Section tone="white" aria-label="Next steps" innerClass="flex max-w-3xl flex-col gap-6">
+    <p class="text-lead text-body">
+      We will reply {reply ? <strong class="text-ink">{reply.toLowerCase()}</strong> : 'soon'}. Quote your reference if you call or message us.
+    </p>
+    <div class="flex flex-col gap-3 md:flex-row md:gap-4">
+      {wa && <Button href={wa} variant="outline-light" size="lg" icon="whatsapp">Send the drawing on WhatsApp</Button>}
+      <Button href={url('/products/')} variant="text-light" size="lg">Back to products</Button>
+    </div>
+  </Section>
+</PageLayout>
+
+<script>
+  // Show the reference number passed as ?ref= by the RFQ form.
+  const ref = new URLSearchParams(location.search).get('ref');
+  const el = document.querySelector('[data-ref]');
+  if (el && ref && /^INV-\d{6}-[A-Z0-9]{4}$/.test(ref)) el.textContent = ref;
+</script>

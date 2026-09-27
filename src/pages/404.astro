@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/blocks/PageHero.astro';
+import Section from '../components/ui/Section.astro';
+import Button from '../components/ui/Button.astro';
+import { url } from '../lib/paths';
+---
+<BaseLayout title="Page Not Found | Innovac Ceramic" noindex>
+  <PageHero eyebrow="404" title="This page isn’t here" lead="The link may be old, or the page has moved. These will get you back on track." />
+  <Section tone="white" aria-label="Useful links">
+    <div class="flex flex-col gap-3 md:flex-row md:gap-4">
+      <Button href={url('/')} size="lg">Home</Button>
+      <Button href={url('/products/')} variant="outline-light" size="lg">Products</Button>
+      <Button href={url('/request-a-quote/')} variant="outline-light" size="lg">Request a quote</Button>
+    </div>
+  </Section>
+</BaseLayout>

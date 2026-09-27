@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/blocks/PageHero.astro';
+import Section from '../components/ui/Section.astro';
+import DownloadList from '../components/blocks/DownloadList.astro';
+import { getFamilies } from '../lib/content';
+
+const items = (await getCollection('downloads')).map((d) => d.data);
+const families = await getFamilies();
+const filters = [{ id: 'all', label: 'All' }, ...families.map((f) => ({ id: f.id, label: f.data.title }))];
+---
+<PageLayout
+  title="Datasheets & Company Profile Downloads | Innovac Ceramic"
+  description="Download product datasheets and the company profile for Innovac Ceramic foundry consumables, filter candles and ceramic fibre insulation. Request a quote."
+  breadcrumbs={[{ label: 'Downloads' }]}
+>
+  <PageHero eyebrow="Downloads" title="Datasheets and documents" lead="Free to download, no sign-up. If a datasheet isn’t online yet, ask and we’ll send it." />
+  <Section tone="white" aria-label="Downloads" innerClass="flex flex-col gap-8">
+    <!-- Filter: radio buttons + :has(), no JavaScript. -->
+    <fieldset class="downloads-filter flex flex-wrap gap-2">
+      <legend class="sr-only">Filter by product family</legend>
+      {
+        filters.map((f, i) => (
+          <label class="cursor-pointer">
+            <input type="radio" name="family" value={f.id} checked={i === 0} class="peer sr-only" />
+            <span class="inline-flex min-h-11 items-center rounded-sm border border-line-light px-4 text-[15px] font-semibold text-ink peer-checked:border-flame peer-checked:bg-flame peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-flame hover:border-ink">
+              {f.label}
+            </span>
+          </label>
+        ))
+      }
+    </fieldset>
+    <div class="downloads-list"><DownloadList items={items} /></div>
+  </Section>
+</PageLayout>
+
+<style>
+  /* Hide rows from other families when a family filter is picked; rows without a family always show. */
+  :global(main:has(.downloads-filter input[value='foundry-consumables']:checked) .downloads-list li[data-family]:not([data-family='foundry-consumables'])),
+  :global(main:has(.downloads-filter input[value='hot-gas-filtration']:checked) .downloads-list li[data-family]:not([data-family='hot-gas-filtration'])),
+  :global(main:has(.downloads-filter input[value='thermal-insulation']:checked) .downloads-list li[data-family]:not([data-family='thermal-insulation'])) {
+    display: none;
+  }
+</style>

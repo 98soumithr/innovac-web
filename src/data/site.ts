@@ -45,6 +45,8 @@ export interface Site {
   capacity: { value: string; unit: string } | null; // { value: "50,000", unit: "pcs / month" }
   plantsSupplied: string | null; // "120+"
   productLines: number | null;
+  plantArea: string | null; // "2,000 m²"
+  exportApproved: boolean; // mention export only when true (site-plan §3 Plant & Quality)
   certificates: Certificate[];
   quoteReplyTime: string | null; // "Within 1 working day"
   qualityChecks: QualityCheck[];
@@ -73,6 +75,8 @@ export const site: Site = {
   capacity: null,
   plantsSupplied: null,
   productLines: null,
+  plantArea: null,
+  exportApproved: false,
   certificates: [],
   quoteReplyTime: null,
   qualityChecks: [],

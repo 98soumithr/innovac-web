@@ -1,0 +1,69 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/blocks/PageHero.astro';
+import Section from '../components/ui/Section.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
+import PhotoFrame from '../components/ui/PhotoFrame.astro';
+import RfqForm from '../components/forms/RfqForm.astro';
+import Icon from '../components/ui/Icon.astro';
+import { todo } from '../data/site';
+
+const examples = ['custom burner block', 'special cone to drawing', 'shaped insulation piece', 'custom sleeve profile', 'machined board part', 'flanged candle end'];
+const send = [
+  { title: 'A drawing', text: 'PDF, DWG, DXF or STEP. Dimensions and tolerances marked.' },
+  { title: 'A sample part', text: 'Send the part you use today. We measure it and quote a match.' },
+  { title: 'Dimensions and the job', text: 'A sketch with sizes, and where the part goes in your process.' },
+];
+const need = ['Size or drawing', 'Quantity per order or per month', 'Operating temperature', 'The metal or gas the part meets', 'Delivery location'];
+const tolerances = todo('standard tolerances we can hold on custom shapes');
+---
+<PageLayout
+  title="Custom Ceramic Fibre Shapes Made to Drawing | Innovac"
+  description="Custom ceramic fibre shapes made to your drawing, sample or sketch in our Hyderabad plant. Burner blocks, cones, sleeves and special parts. Request a quote."
+  breadcrumbs={[{ label: 'Custom shapes' }]}
+>
+  <PageHero
+    eyebrow="Custom shapes"
+    title="Custom ceramic fibre shapes, made to your drawing."
+    lead="When a standard size doesn’t fit, we make custom ceramic fibre shapes to your drawing, sample or sketch in our own plant."
+  />
+
+  <Section tone="paper" aria-labelledby="examples-title" innerClass="flex flex-col gap-10">
+    <SectionHeader eyebrow="What we make to order" id="examples-title">Parts made to order</SectionHeader>
+    <div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
+      {examples.map((e) => <PhotoFrame caption={e} tone="light" class="h-40 md:h-56" />)}
+    </div>
+  </Section>
+
+  <Section tone="white" aria-labelledby="send-title" innerClass="grid gap-12 lg:grid-cols-2 lg:gap-x-6">
+    <div class="flex flex-col gap-8">
+      <SectionHeader eyebrow="What to send" id="send-title">Start with any of these</SectionHeader>
+      <ul class="border-t border-line-light">
+        {send.map((s) => (
+          <li class="flex flex-col gap-1 border-b border-line-light py-5">
+            <span class="text-[18px] font-semibold text-ink">{s.title}</span>
+            <span class="text-copy text-body">{s.text}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="flex flex-col gap-8">
+      <SectionHeader eyebrow="What we need to quote">Five details</SectionHeader>
+      <ul class="border-t border-line-light">
+        {need.map((n) => (
+          <li class="flex items-center gap-3 border-b border-line-light py-4 text-[16px] text-ink"><Icon name="check" size={18} class="text-flame" />{n}</li>
+        ))}
+      </ul>
+      {tolerances && <p class="font-mono text-[12px] text-caption">{tolerances}</p>}
+      <div class="on-dark rounded-sm bg-carbon p-6 text-body-on-dark">
+        <p class="font-display text-[22px] font-semibold text-text-on-dark uppercase">Your drawings stay confidential</p>
+        <p class="mt-2 text-copy">We use your drawings only to quote and make your parts. We don’t share them or make your design for anyone else.</p>
+      </div>
+    </div>
+  </Section>
+
+  <Section tone="paper" id="quote" aria-labelledby="custom-quote-title" innerClass="flex max-w-4xl flex-col gap-8">
+    <SectionHeader eyebrow="Request a quote" id="custom-quote-title">Send your drawing</SectionHeader>
+    <RfqForm variant="full" product="custom-shape" id="custom-rfq" />
+  </Section>
+</PageLayout>

@@ -1,0 +1,35 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import PageHero from '../../components/blocks/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import ProductFamily from '../../components/blocks/ProductFamily.astro';
+import ProductCard from '../../components/blocks/ProductCard.astro';
+import CustomCard from '../../components/blocks/CustomCard.astro';
+import { getProductsByFamily, productPath } from '../../lib/content';
+import { url } from '../../lib/paths';
+
+const groups = (await getProductsByFamily()).filter((g) => g.products.length > 0);
+---
+<PageLayout
+  title="Ceramic Fibre Products & Foundry Consumables | Innovac"
+  description="Foundry consumables, hot gas filter candles and ceramic fibre insulation, made in Hyderabad in standard sizes or to your drawing. Request a quote."
+  breadcrumbs={[{ label: 'Products' }]}
+>
+  <PageHero
+    eyebrow="Products"
+    title="Three product families"
+    lead="Every line is available in standard sizes, or made to your drawing, sample or sketch."
+  />
+  <Section tone="paper" aria-label="Product families" innerClass="flex flex-col gap-14">
+    {
+      groups.map(({ family, products }) => (
+        <ProductFamily letter={family.data.letter} title={family.data.title} href={url(productPath(family.id))}>
+          {products.map((p) => (
+            <ProductCard href={url(productPath(p.id))} name={p.data.shortName} summary={p.data.summary} photo={p.data.images.hero} />
+          ))}
+          {family.id === 'thermal-insulation' && <CustomCard href={url('/custom-ceramic-fibre-shapes/')} class="col-span-2 md:col-span-1" />}
+        </ProductFamily>
+      ))
+    }
+  </Section>
+</PageLayout>

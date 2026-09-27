@@ -1,0 +1,36 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/blocks/PageHero.astro';
+import Section from '../components/ui/Section.astro';
+import { site, fact, todo } from '../data/site';
+
+const contact = fact(site.email, 'email for privacy requests');
+const review = todo('have this notice reviewed before launch');
+const updated = '27 September 2026';
+---
+<PageLayout
+  title="Privacy Notice | Innovac Ceramic"
+  description="How Innovac Ceramic Pvt Ltd collects and uses the personal data you send through our quote form, under India's Digital Personal Data Protection Act 2023."
+  breadcrumbs={[{ label: 'Privacy' }]}
+  rfqBand={false}
+>
+  <PageHero eyebrow="Privacy" title="Privacy notice" lead={`Last updated ${updated}.`} />
+  <Section tone="white" aria-label="Privacy notice">
+    <div class="prose-site text-body">
+      {review && <p class="font-mono text-[13px] text-caption">{review}</p>}
+      <p>This notice explains how {site.legalName} (“we”) handles personal data sent through this website. We follow India’s Digital Personal Data Protection Act, 2023.</p>
+      <h2>What we collect</h2>
+      <p>When you send the quote form we collect what you type: your name, phone number, email, company, delivery location, product, quantity and message, plus any files you attach. We also note the page you sent it from.</p>
+      <p>We don’t use advertising cookies. Our site statistics are counted without cookies and without identifying you.</p>
+      <h2>Why we use it</h2>
+      <p>We use your details only to prepare and send your quote, and to follow up on it by phone, WhatsApp or email. You give consent by sending the form.</p>
+      <h2>Who else handles it</h2>
+      <p>The form is delivered to our inbox by Web3Forms, an email-forwarding service that processes it for us. We don’t sell or share your data with anyone else.</p>
+      <h2>How long we keep it</h2>
+      <p>We keep quote requests while we are dealing with you and for our business records. Drawings and other attached files are deleted after 180 days, unless they are part of an order.</p>
+      <h2>Your rights</h2>
+      <p>You can ask to see, correct or delete your data, withdraw consent, or raise a grievance. Write to us at {contact ?? 'the email shown on our contact page'}. We reply within 30 days.</p>
+      <p>If you are not satisfied with our response, you can complain to the Data Protection Board of India.</p>
+    </div>
+  </Section>
+</PageLayout>

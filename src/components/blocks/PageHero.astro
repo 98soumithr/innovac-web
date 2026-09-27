@@ -1,0 +1,19 @@
+---
+import Eyebrow from '../ui/Eyebrow.astro';
+
+// Carbon hero for inner pages: eyebrow, H1, lead (no ruler — that belongs to home and product heroes).
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+}
+const { eyebrow, title, lead } = Astro.props;
+---
+<section class="on-dark bg-carbon" aria-labelledby="page-title">
+  <div class="container-site flex flex-col gap-6 pt-8 pb-14 lg:pt-12 lg:pb-24">
+    <Eyebrow tone="dark">{eyebrow}</Eyebrow>
+    <h1 id="page-title" class="max-w-[16ch] font-display text-display font-bold text-text-on-dark uppercase">{title}</h1>
+    {lead && <p class="max-w-[640px] text-lead text-body-on-dark">{lead}</p>}
+    <slot />
+  </div>
+</section>

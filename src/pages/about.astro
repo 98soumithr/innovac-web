@@ -1,0 +1,67 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/blocks/PageHero.astro';
+import Section from '../components/ui/Section.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
+import { site, fact, todo } from '../data/site';
+import { url } from '../lib/paths';
+
+const address = site.address
+  ? [site.address.street, site.address.locality, `${site.address.city}, ${site.address.region} ${site.address.postalCode}`].filter(Boolean).join(', ')
+  : fact(null, 'plant address');
+const facts = [
+  ['Legal name', site.legalName],
+  ['Manufacturing since', fact(site.foundedYear?.toString(), 'year founded')],
+  ['GSTIN', fact(site.gstin, 'GSTIN')],
+  ['CIN', site.cin],
+  ['Plant', address],
+].filter(([, v]) => v) as [string, string][];
+const story = todo('founding story: year, founders or leadership (if they want names shown)');
+---
+<PageLayout
+  title="About Innovac Ceramic | Hyderabad Manufacturer"
+  description="Innovac Ceramic Pvt Ltd makes ceramic fibre shapes, foundry consumables and hot gas filter candles in Hyderabad for Indian industry. Request a quote."
+  breadcrumbs={[{ label: 'About' }]}
+>
+  <PageHero
+    eyebrow="About"
+    title="The maker behind the parts"
+    lead="Innovac Ceramic makes ceramic fibre shapes, foundry consumables and hot gas filter candles in our own plant in Hyderabad."
+  />
+
+  <Section tone="white" aria-labelledby="story-title" innerClass="grid gap-12 lg:grid-cols-12 lg:gap-x-6">
+    <div class="flex flex-col gap-6 lg:col-span-7">
+      <SectionHeader eyebrow="Our story" id="story-title">What we do</SectionHeader>
+      <div class="prose-site text-body">
+        {story && <p class="font-mono text-[13px] text-caption">{story}</p>}
+        <p>We make three families of parts. Foundry consumables help melt shops sample, tap and pour. Filter candles clean hot process gas. Insulation shapes keep heat where it belongs.</p>
+        <p>Our buyers are foundries, steel plants, process plants and furnace builders. Many parts are made to the buyer’s own drawing.</p>
+        <p>Every order is measured and checked in our plant before it ships. A test report is available with every order.</p>
+      </div>
+      <div class="flex flex-wrap gap-x-6 gap-y-2">
+        <a href={url('/products/')} class="inline-flex min-h-11 items-center font-semibold text-flame hover:text-flame-hover hover:underline">Our products</a>
+        <a href={url('/plant-and-quality/')} class="inline-flex min-h-11 items-center font-semibold text-flame hover:text-flame-hover hover:underline">Plant &amp; Quality</a>
+      </div>
+    </div>
+    <div class="flex flex-col gap-6 lg:col-span-4 lg:col-start-9">
+      <h2 class="font-display text-h3 font-semibold text-ink uppercase">Company facts</h2>
+      <dl class="border-t border-line-light font-mono text-data">
+        {facts.map(([k, v]) => (
+          <div class="flex flex-col gap-1 border-b border-line-light py-3">
+            <dt class="text-[11px] tracking-[0.14em] text-caption uppercase">{k}</dt>
+            <dd class="break-words text-ink">{v}</dd>
+          </div>
+        ))}
+      </dl>
+      {
+        site.mapsUrl ? (
+          <a href={site.mapsUrl} target="_blank" rel="noopener" class="hatch-light flex h-44 items-end rounded-sm border border-line-light p-3 font-mono text-[12px] text-flame hover:underline">
+            Open the plant location in Google Maps
+          </a>
+        ) : (
+          <div class="hatch-light flex h-44 items-end rounded-sm border border-line-light p-3 font-mono text-[11px] text-caption">[MAP]</div>
+        )
+      }
+    </div>
+  </Section>
+</PageLayout>

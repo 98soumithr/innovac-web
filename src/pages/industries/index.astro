@@ -1,0 +1,26 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import PageHero from '../../components/blocks/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import IndustryTile from '../../components/blocks/IndustryTile.astro';
+import { getIndustries, industryPath } from '../../lib/content';
+import { url } from '../../lib/paths';
+
+const industries = await getIndustries();
+---
+<PageLayout
+  title="Industries We Supply | Innovac Ceramic"
+  description="Ceramic fibre products and foundry consumables for iron, steel and non-ferrous foundries, process plants and furnace builders. Request a quote."
+  breadcrumbs={[{ label: 'Industries' }]}
+>
+  <PageHero
+    eyebrow="Industries"
+    title="Who we supply"
+    lead="Foundries, steel plants, process plants and furnace builders. Pick your industry to see the parts it uses."
+  />
+  <Section tone="paper" aria-label="Industries">
+    <div class="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-5">
+      {industries.map((i) => <IndustryTile href={url(industryPath(i.id))} title={i.data.shortName} products={i.data.tileProducts} />)}
+    </div>
+  </Section>
+</PageLayout>
